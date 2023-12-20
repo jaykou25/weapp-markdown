@@ -1,0 +1,2 @@
+<view>Hello there, my name is {{name}}</view>
+
