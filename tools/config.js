@@ -38,41 +38,55 @@ module.exports = {
       libraryTarget: 'commonjs2',
     },
     target: 'node',
-    externals: [nodeExternals()], // 忽略 node_modules
+    externals: [
+      // nodeExternals()
+    ], // 忽略 node_modules
     module: {
-      rules: [{
-        test: /\.js$/i,
-        use: [{
-          loader: 'thread-loader',
-        }, {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
-        }, {
-          loader: 'eslint-loader',
-        }],
-        exclude: /node_modules/
-      }, {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [{
-          loader: 'thread-loader',
-        }, {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
-        }, {
-          loader: 'ts-loader',
-          options: {
-            appendTsSuffixTo: [/\.vue$/],
-            happyPackMode: true,
-          },
-        }, {
-          loader: 'eslint-loader',
-        }],
-      }],
+      rules: [
+        {
+          test: /\.js$/i,
+          use: [
+            {
+              loader: 'thread-loader',
+            },
+            {
+              loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+              },
+            },
+            {
+              loader: 'eslint-loader',
+            },
+          ],
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.ts$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'thread-loader',
+            },
+            {
+              loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+              },
+            },
+            {
+              loader: 'ts-loader',
+              options: {
+                appendTsSuffixTo: [/\.vue$/],
+                happyPackMode: true,
+              },
+            },
+            {
+              loader: 'eslint-loader',
+            },
+          ],
+        },
+      ],
     },
     resolve: {
       modules: [src, 'node_modules'],
@@ -80,7 +94,7 @@ module.exports = {
     },
     plugins: [
       new webpack.DefinePlugin({}),
-      new webpack.optimize.LimitChunkCountPlugin({maxChunks: 1}),
+      new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     ],
     optimization: {
       minimize: false,
@@ -88,9 +102,9 @@ module.exports = {
     devtool: 'source-map', // 生成 js sourcemap
     performance: {
       hints: 'warning',
-      assetFilter: assetFilename => assetFilename.endsWith('.js')
-    }
+      assetFilter: (assetFilename) => assetFilename.endsWith('.js'),
+    },
   },
 
-  copy: ['./assets', './utils.js'], // 将会复制到目标目录
+  copy: ['./assets'], // 将会复制到目标目录
 }

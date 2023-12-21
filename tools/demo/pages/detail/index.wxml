@@ -1,0 +1,5 @@
+<view>
+	<button bind:tap="change">变value</button>
+	<weapp-markdown value="{{value}}" />
+</view>
+

@@ -1,2 +1,18 @@
-<comp name='jay' />
+<scroll-view>
+	<view class='weui-cells'>
+		<view
+		 bind:tap="toDetail"
+		 class='weui-cell weui-cell_access'
+		 wx:for="{{list}}"
+		 wx:key="id"
+		 data-id="{{item.id}}"
+		>
+			<view class='weui-cell__bd'>
+				{{item.title}}
+				<view wx:if="{{item.desc}}" class='weui-cell__desc'>{{item.desc}}</view>
+			</view>
+			<view class='weui-cell__ft' />
+		</view>
+	</view>
+</scroll-view>
 
