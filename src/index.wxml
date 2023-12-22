@@ -1,2 +1,11 @@
+<wxs module="m1">
+	var format = function(val) {
+	return JSON.stringify(val)
+	};
+
+	module.exports.format = format;
+</wxs>
+
 <view>{{value}}</view>
+<view>{{m1.format(tree)}}</view>
 

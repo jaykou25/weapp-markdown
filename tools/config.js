@@ -38,40 +38,38 @@ module.exports = {
       libraryTarget: 'commonjs2',
     },
     target: 'node',
-    externals: [
-      // nodeExternals()
-    ], // 忽略 node_modules
+    // externals: [nodeExternals()], // 忽略 node_modules
     module: {
       rules: [
         {
           test: /\.js$/i,
           use: [
-            {
-              loader: 'thread-loader',
-            },
+            // {
+            //   loader: 'thread-loader',
+            // },
             {
               loader: 'babel-loader',
               options: {
-                cacheDirectory: true,
+                presets: ['@babel/preset-env'],
               },
             },
-            {
-              loader: 'eslint-loader',
-            },
+            // {
+            //   loader: 'eslint-loader',
+            // },
           ],
-          exclude: /node_modules/,
+          // exclude: /node_modules/,
         },
         {
           test: /\.ts$/,
           exclude: /node_modules/,
           use: [
-            {
-              loader: 'thread-loader',
-            },
+            // {
+            //   loader: 'thread-loader',
+            // },
             {
               loader: 'babel-loader',
               options: {
-                cacheDirectory: true,
+                presets: ['@babel/preset-env'],
               },
             },
             {
@@ -81,16 +79,18 @@ module.exports = {
                 happyPackMode: true,
               },
             },
-            {
-              loader: 'eslint-loader',
-            },
+            // {
+            //   loader: 'eslint-loader',
+            // },
           ],
         },
       ],
     },
     resolve: {
-      modules: [src, 'node_modules'],
+      // modules: [src, 'node_modules'],
+      modules: ['node_modules'],
       extensions: ['.js', '.json'],
+      // mainFields: ['browser', 'module', 'main', 'exports.development'],
     },
     plugins: [
       new webpack.DefinePlugin({}),

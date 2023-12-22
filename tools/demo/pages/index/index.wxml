@@ -1,4 +1,5 @@
 <scroll-view>
+	<view class='weui-cells__title'>基础</view>
 	<view class='weui-cells'>
 		<view
 		 bind:tap="toDetail"
