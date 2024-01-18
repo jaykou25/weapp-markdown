@@ -1,0 +1,9 @@
+<view bind:tap="toDetail" class='weui-cell weui-cell_access' wx:for="{{row.data}}" wx:key="id" data-id="{{item.id}}">
+  <view class='weui-cell__bd'>
+    {{item.title}}
+    <view wx:if="{{item.desc}}" class='weui-cell__desc'>{{item.desc}}</view>
+  </view>
+  <view class='weui-cell__ft' />
+</view>
+<view class='weui-cells'></view>
+<view class='weui-cells__title'>{{row.title}}</view>

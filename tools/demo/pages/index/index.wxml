@@ -1,19 +1,23 @@
 <scroll-view>
-	<view class='weui-cells__title'>基础</view>
-	<view class='weui-cells'>
-		<view
-		 bind:tap="toDetail"
-		 class='weui-cell weui-cell_access'
-		 wx:for="{{list}}"
-		 wx:key="id"
-		 data-id="{{item.id}}"
-		>
-			<view class='weui-cell__bd'>
-				{{item.title}}
-				<view wx:if="{{item.desc}}" class='weui-cell__desc'>{{item.desc}}</view>
-			</view>
-			<view class='weui-cell__ft' />
-		</view>
-	</view>
+  <block wx:for="{{dataSource}}" wx:key="title" wx:for-item="row" wx:for-index="idx">
+    <view class="weui-cells__title">{{row.title}}</view>
+    <view class="weui-cells">
+      <view
+        bind:tap="toDetail"
+        class="weui-cell weui-cell_access"
+        wx:for="{{row.data}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        data-parent-index="{{idx}}"
+      >
+        <view class="weui-cell__bd">
+          {{item.title}}
+          <view wx:if="{{item.desc}}" class="weui-cell__desc">
+            {{item.desc}}
+          </view>
+        </view>
+        <view class="weui-cell__ft" />
+      </view>
+    </view>
+  </block>
 </scroll-view>
-

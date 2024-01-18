@@ -1,0 +1,55 @@
+<!-- table -->
+<view class='table-wrapper' style="overflow-x: auto; display: flex;">
+	<view class="{{data.tagName}}">
+		<!-- thead、tbody、tfoot -->
+		<block
+		 wx:if="{{data.children}}"
+		 wx:for="{{data.children}}"
+		 wx:for-item="item"
+		 wx:key="i"
+		>
+			<view wx:if="{{item.type === 'element'}}" class="{{item.tagName}}">
+				<!-- tr -->
+				<block
+				 wx:if="{{item.children}}"
+				 wx:for="{{item.children}}"
+				 wx:for-item="item"
+				 wx:key="i"
+				>
+					<view wx:if="{{item.type === 'element'}}" class="{{item.tagName}}">
+						<!-- td -->
+						<block
+						 wx:if="{{item.children}}"
+						 wx:for="{{item.children}}"
+						 wx:for-item="item"
+						 wx:key="i"
+						>
+							<view
+							 wx:if="{{item.type === 'element' }}"
+							 class="{{item.tagName}}"
+							 width="{{data.attrs.width}}"
+							 style="{{data.attrs.style}}"
+							>
+								<!-- content -->
+								<block wx:if="{{item.children}}">
+									<tree-node
+									 wx:for="{{item.children}}"
+									 wx:for-item="innerItem"
+									 wx:key="index"
+									 outer-row="{{false}}"
+									 node="{{innerItem}}"
+									 can-play="{{false}}"
+									/>
+								</block>
+							</view>
+						</block>
+					</view>
+				</block>
+			</view>
+		</block>
+	</view>
+	<!-- 边距占位符 -->
+	<!-- table 要实现右边超出的话不占用边距, 不超的话右边要保留28px的边距 -->
+	<view style="width: 28px;" />
+</view>
+

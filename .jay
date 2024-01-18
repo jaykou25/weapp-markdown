@@ -1,0 +1,36 @@
+{
+  // "plugins": [
+  //     ["module-resolver", {
+  //         "root": ["./src"],
+  //         "alias": {}
+  //     }]
+  // ],
+  "presets": [["@babel/preset-env", { "loose": true, "modules": "auto" }]],
+  "plugins": [
+    [
+      "prismjs",
+      {
+        "languages": [
+          "javascript",
+          "typescript",
+          "css",
+          "markup",
+          "json",
+          "json5",
+          "bash",
+          "go",
+          "java",
+          "python",
+          "ruby",
+          "sql",
+          "yaml",
+          "stylus",
+          "kotlin",
+          "rust"
+        ],
+        "plugins": [],
+        "css": false
+      }
+    ]
+  ]
+}

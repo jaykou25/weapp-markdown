@@ -6,6 +6,15 @@
 	module.exports.format = format;
 </wxs>
 
-<view>{{value}}</view>
-<view>{{m1.format(tree)}}</view>
+<view class="markdown-body">
+	<block wx:for="{{tree.children}}" wx:key="index">
+		<tree-node node="{{item}}" />
+	</block>
+	<!-- <tree-node
+		 wx:for="{{tree.children}}"
+		 wx:key="index"
+		 outer-row="{{true}}"
+		 node="{{item}}"
+		/> -->
+</view>
 

@@ -12,7 +12,7 @@ const dev = path.join(demoDist, 'components')
 const dist = path.resolve(__dirname, '../miniprogram_dist')
 
 module.exports = {
-  entry: ['index', 'lib'],
+  entry: ['index'],
 
   isDev,
   isWatch,
@@ -38,6 +38,7 @@ module.exports = {
       libraryTarget: 'commonjs2',
     },
     target: 'node',
+    stats: 'normal',
     // externals: [nodeExternals()], // 忽略 node_modules
     module: {
       rules: [
@@ -50,7 +51,34 @@ module.exports = {
             {
               loader: 'babel-loader',
               options: {
-                presets: ['@babel/preset-env'],
+                presets: ['@babel/preset-env', { modules: 'auto' }],
+                plugins: [
+                  [
+                    'prismjs',
+                    {
+                      languages: [
+                        'javascript',
+                        'typescript',
+                        'css',
+                        'markup',
+                        'json',
+                        'json5',
+                        'bash',
+                        'go',
+                        'java',
+                        'python',
+                        'ruby',
+                        'sql',
+                        'yaml',
+                        'stylus',
+                        'kotlin',
+                        'rust',
+                      ],
+                      plugins: [],
+                      css: false,
+                    },
+                  ],
+                ],
               },
             },
             // {
@@ -106,5 +134,5 @@ module.exports = {
     },
   },
 
-  copy: ['./assets'], // 将会复制到目标目录
+  copy: ['./assets', 'material-palenight.wxss'], // 将会复制到目标目录
 }

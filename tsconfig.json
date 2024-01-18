@@ -9,17 +9,11 @@
     "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata":true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "files": [
-    "node_modules/miniprogram-api-typings/index.d.ts"
-  ],
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "files": ["node_modules/miniprogram-api-typings/index.d.ts"],
+  "include": ["src/**/*.ts", "src/treeNode/index.js"],
+  "exclude": ["node_modules"]
 }

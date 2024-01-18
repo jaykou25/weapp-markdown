@@ -1,7 +1,9 @@
-import { fromMarkdown } from 'mdast-util-from-markdown'
 import { markdownParse } from './parse'
 
 Component({
+  options: {
+    styleIsolation: 'shared',
+  },
   properties: {
     value: {
       type: String,
@@ -9,7 +11,7 @@ Component({
     },
   },
   data: {
-    tree: [],
+    tree: { children: [] },
   },
   observers: {
     value: function (value) {
@@ -23,7 +25,6 @@ Component({
       console.log('created: ')
       // console.log('on created in src', toTree())
       // console.log('on created mdtohast', mdToHast)
-      this.parseMdText(this.properties.value)
     },
   },
   methods: {
@@ -31,6 +32,7 @@ Component({
     parseMdText(value) {
       // const treeOri = mdToHast(value, defaultSchema)
       const treeOri = markdownParse(value)
+      console.log('解析完毕 text', treeOri)
       this.setData({ tree: treeOri })
     },
   },

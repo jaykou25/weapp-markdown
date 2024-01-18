@@ -1,0 +1,47 @@
+.tomatoCount {
+  position: absolute;
+  right: 15px;
+  top: 0;
+}
+
+.tomatoCountInner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.myslideview {
+  /* position: relative; */
+  overflow: hidden;
+}
+
+.flex {
+  display: inline-flex;
+  width: 100%;
+}
+
+.holder {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+.myslide {
+  flex: auto;
+}
+
+.weui-slideview__btn {
+  line-height: unset !important;
+  height: unset !important;
+}
+
+.wx-checkbox-input {
+  background: transparent !important;
+}
+
+.wx-checkbox-input-checked::before {
+  color: rgb(9, 187, 7) !important;
+}

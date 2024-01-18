@@ -16,7 +16,10 @@ function getJsonPathInfo(jsonPath) {
   const fileBase = path.join(relative, fileName)
 
   return {
-    dirPath, fileName, relative, fileBase
+    dirPath,
+    fileName,
+    relative,
+    fileBase,
   }
 }
 
@@ -28,7 +31,7 @@ async function checkIncludedComponents(jsonPath, componentListMap) {
   const json = _.readJson(jsonPath)
   if (!json) throw new Error(`json is not valid: "${jsonPath}"`)
 
-  const {dirPath, fileName, fileBase} = getJsonPathInfo(jsonPath)
+  const { dirPath, fileName, fileBase } = getJsonPathInfo(jsonPath)
   if (hasCheckCompoenntMap[fileBase]) return
   hasCheckCompoenntMap[fileBase] = true
 
@@ -39,7 +42,10 @@ async function checkIncludedComponents(jsonPath, componentListMap) {
 
     for (let j = 0, jlen = keys.length; j < jlen; j++) {
       const key = keys[j]
-      let value = typeof checkPropValue[key] === 'object' ? checkPropValue[key].default : checkPropValue[key]
+      let value =
+        typeof checkPropValue[key] === 'object'
+          ? checkPropValue[key].default
+          : checkPropValue[key]
       if (!value || typeof value === 'boolean') continue
 
       value = _.transformPath(value, path.sep)
@@ -63,6 +69,7 @@ async function checkIncludedComponents(jsonPath, componentListMap) {
   // 进入存储
   componentListMap.wxmlFileList.push(`${fileBase}.wxml`)
   componentListMap.wxssFileList.push(`${fileBase}.wxss`)
+  componentListMap.wxsFileList.push(`${fileBase}.wxs`)
   componentListMap.jsonFileList.push(`${fileBase}.json`)
   componentListMap.jsFileList.push(`${fileBase}${jsExt}`)
 
@@ -75,13 +82,14 @@ module.exports = async function (entry) {
     wxssFileList: [],
     jsonFileList: [],
     jsFileList: [],
+    wxsFileList: [],
 
     jsFileMap: {}, // 为 webpack entry 所用
   }
 
   const isExists = await _.checkFileExists(entry)
   if (!isExists) {
-    const {dirPath, fileName, fileBase} = getJsonPathInfo(entry)
+    const { dirPath, fileName, fileBase } = getJsonPathInfo(entry)
 
     const wholeFileBase = path.join(dirPath, fileName)
     let jsExt = '.js'

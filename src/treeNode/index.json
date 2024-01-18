@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "tree-node": "./index",
+    "table": "../table/index"
+  }
+}

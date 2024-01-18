@@ -1,0 +1,103 @@
+<wxs module="util">
+	var getClass = function(properties) {
+	if (properties) {
+	if (properties.className) {
+	return properties.className.join(', ')
+	}
+	}
+
+	return ''
+	};
+
+	var isValueEmpty = function(val) {
+	return val === '\\n' || val.trim() === ''
+	}
+
+	module.exports.getClass = getClass ;
+	module.exports.isValueEmpty = isValueEmpty;
+</wxs>
+<!-- 空节点不渲染 -->
+<block wx:if="{{node.type==='text' && util.isValueEmpty(node.value)}}" />
+
+<!-- 处理代码块 -->
+<block wx:elif="{{isBlockCode}}">
+	<view class="code hljs {{util.getClass(node.properties)}}">
+		<rich-text wx:for="{{node.children}}" wx:key="index" nodes="{{item.value}}" />
+	</view>
+</block>
+<!-- 末尾结点 -->
+<block wx:elif="{{node.type==='text'}}">
+	<!-- space 显示连续空格很重要, 对于 pre 内容对齐很有用, ensp 为中文字符空格一半大小, emsp 中文字符空格大小(太宽了) -->
+	<text space="ensp" decode>{{node.value}}</text>
+</block>
+<block wx:elif="{{node.type==='element'}}">
+	<!-- 处理a标签, 在小程序中a标签不能跳转, 点击后存入剪贴板 -->
+	<view
+	 wx:if="{{node.tagName === 'a'}}"
+	 class="{{node.tagName}}"
+	 data-href="{{node.properties.href}}"
+	 bind:tap="handleLink"
+	>
+		<block wx:if="{{node.children}}">
+			<tree-node
+			 wx:for="{{node.children}}"
+			 wx:key="index"
+			 outer-row="{{false}}"
+			 node="{{item}}"
+			 isPlaying="{{isPlaying}}"
+			 playingUuid="{{playingUuid}}"
+			/>
+		</block>
+	</view>
+	<!-- 处理table -->
+	<table wx:elif="{{node.tagName === 'table'}}" class="{{outerRow ? 'outerRow' : ''}}" data="{{node}}" />
+	<!-- 处理checkbox -->
+	<checkbox
+	 wx:elif="{{node.tagName === 'input'}}"
+	 class="{{outerRow ? 'outerRow' : ''}}"
+	 checked="{{node.properties.checked}}"
+	 disabled
+	/>
+
+	<!-- 显示图片 -->
+	<view wx:elif="{{node.tagName === 'img'}}" class="img-wrapper {{outerRow ? 'outerRow' : ''}}">
+		<!-- <my-image
+		 lazy-load
+		 data-src="{{node.properties.src}}"
+		 bindtap="listenImgPreview"
+		 mode='widthFix'
+		 src="{{node.properties.src}}"
+		/> -->
+	</view>
+	<view wx:elif="{{node.tagName === 'video'}}" class="{{outerRow ? 'outerRow' : ''}}">
+		<video src="{{node.properties.src}}" />
+	</view>
+	<view wx:elif="{{node.tagName === 'pre'}}" class="{{node.tagName}}">
+		<block wx:if="{{node.children}}">
+			<tree-node
+			 wx:for="{{node.children}}"
+			 wx:key="index"
+			 is-block-code="{{item.tagName === 'code'}}"
+			 outer-row="{{false}}"
+			 node="{{item}}"
+			 can-play="{{item.properties.canPlay}}"
+			 isPlaying="{{isPlaying}}"
+			 playingUuid="{{playingUuid}}"
+			/>
+		</block>
+	</view>
+	<view wx:else class="{{node.tagName}} {{outerRow ? 'outerRow' : ''}} {{util.getClass(node.properties)}}" style="{{node.properties.style}} {{node.properties.start ? 'counter-reset: item ' + (node.properties.start - 1) : ''}}">
+		<block wx:if="{{node.children}}">
+			<tree-node
+			 wx:for="{{node.children}}"
+			 wx:key="index"
+			 outer-row="{{false}}"
+			 node="{{item}}"
+			 can-play="{{item.properties.canPlay}}"
+			 isPlaying="{{isPlaying}}"
+			 playingUuid="{{playingUuid}}"
+			/>
+		</block>
+	</view>
+</block>
+
