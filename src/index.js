@@ -1,9 +1,6 @@
 import { markdownParse } from './parse'
 
 Component({
-  options: {
-    styleIsolation: 'shared',
-  },
   properties: {
     value: {
       type: String,
@@ -12,6 +9,10 @@ Component({
   },
   data: {
     tree: { children: [] },
+    linkCSSShow: false,
+    linkShow: false,
+    linkHref: '',
+    linkText: '',
   },
   observers: {
     value: function (value) {
@@ -34,6 +35,32 @@ Component({
       const treeOri = markdownParse(value)
       console.log('解析完毕 text', treeOri)
       this.setData({ tree: treeOri })
+    },
+    closeLinkDialog() {
+      this.setData({ linkCSSShow: false })
+
+      setTimeout(() => {
+        this.setData({ linkShow: false })
+      }, 400)
+    },
+    linkClick(e) {
+      const { detail } = e
+      const { href, title } = detail
+      this.setData({
+        linkCSSShow: true,
+        linkShow: true,
+        linkHref: href,
+        linkText: title,
+      })
+    },
+    copy(e) {
+      const { value } = e.currentTarget.dataset
+      wx.setClipboardData({
+        data: value,
+        success: () => {
+          this.closeLinkDialog()
+        },
+      })
     },
   },
 })

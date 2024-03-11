@@ -14,11 +14,18 @@ import { raw } from 'hast-util-raw'
 import { remove } from 'unist-util-remove'
 import { sanitize, defaultSchema } from 'hast-util-sanitize'
 
-import { isNodeBlock } from './utils'
-
 // 用于高亮代码
 import Prism from 'prismjs'
+
+import {
+  getHastNodeTextValue,
+  isNodeBlock,
+  setHProperties,
+  setProperties,
+} from './utils'
+
 Prism.manual = true
+global.Prism = Prism
 
 const extensionMap = {
   vue: 'markup',
@@ -33,6 +40,27 @@ const extensionMap = {
   styl: 'stylus',
   kt: 'kotlin',
   rs: 'rust',
+}
+
+function handleCode(node) {
+  if (node.children && node.children.length > 0) {
+    const lan = node.properties.lang
+    node.children.forEach((child) => {
+      if (lan) {
+        const text = Prism.highlight(
+          child.value,
+          Prism.languages[extensionMap[lan] || lan],
+          lan
+        )
+
+        child.value = text
+      } else {
+        const text = Prism.highlight(child.value, Prism.languages.txt, 'txt')
+
+        child.value = text
+      }
+    })
+  }
 }
 
 /**
@@ -58,14 +86,10 @@ function markdownParse(text) {
 
   console.log('mdast', mdast)
 
-  /**
-   * 将 markdown ast 中的 code 节点的 lang 属性映射到 hast 中
-   */
   visit(mdast, function (node) {
+    /** 将 markdown ast 中的 code 节点的 lang 属性映射到 hast 中 */
     if (node.type === 'code') {
-      if (!node.data) node.data = {}
-      if (!node.data.hProperties) node.data.hProperties = {}
-      node.data.hProperties.lang = node.lang
+      setHProperties(node, { lang: node.lang })
     }
   })
 
@@ -148,7 +172,6 @@ function markdownParse(text) {
          * 找出 pre 下面 tagName 是 code 的元素 (注意要找 pre > code, 单纯的 code 元素可能是行内 code)
          * 将 code 元素里的值高亮处理
          */
-        console.log('处理pre', node)
         if (node.children && node.children.length > 0) {
           node.children.forEach((child) => {
             if (child.tagName === 'code') {
@@ -157,35 +180,19 @@ function markdownParse(text) {
           })
         }
       }
+
+      if (node.tagName === 'a') {
+        setProperties(node, { linkText: getHastNodeTextValue(node) })
+      }
     }
   })
-
-  function handleCode(node) {
-    if (node.children && node.children.length > 0) {
-      const lan = node.properties.lang
-      node.children.forEach((child) => {
-        if (lan) {
-          const text = Prism.highlight(
-            child.value,
-            Prism.languages[extensionMap[lan] || lan] || Prism.languages.txt,
-            lan
-          )
-
-          child.value = text
-        } else {
-          const text = Prism.highlight(child.value, Prism.languages.txt, 'txt')
-
-          child.value = text
-        }
-      })
-    }
-  }
 
   // 将一些属性加入白名单
   defaultSchema.attributes['video'] = ['src', 'controls', 'style']
   defaultSchema.tagNames.push('video')
   defaultSchema.attributes['*'].push('style')
   defaultSchema.attributes['*'].push('className')
+  defaultSchema.attributes['*'].push('linkText')
 
   console.log('hast with remove', hastWithRaw)
 

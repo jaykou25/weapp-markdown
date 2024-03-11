@@ -1,7 +1,6 @@
 Component({
   options: {
-    styleIsolation: 'shared',
-    virtualHost: true,
+    virtualHost: false,
   },
   properties: {
     node: {
@@ -13,6 +12,7 @@ Component({
       value: false,
     },
   },
+
   lifetimes: {
     created: function () {
       // console.log('treenode created: ', this.node)
@@ -23,11 +23,10 @@ Component({
   },
   methods: {
     handleLink(e) {
-      const {
-        dataset: { href },
-      } = e.currentTarget
-      wx.setClipboardData({
-        data: href,
+      const { dataset } = e.currentTarget
+      this.triggerEvent('linkClick', dataset, {
+        bubbles: true,
+        composed: true,
       })
     },
     handlePlay(e) {

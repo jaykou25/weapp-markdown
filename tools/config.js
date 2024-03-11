@@ -35,9 +35,10 @@ module.exports = {
     mode: 'production',
     output: {
       filename: '[name].js',
-      libraryTarget: 'commonjs2',
+      // libraryTarget: 'commonjs2',
     },
     target: 'node',
+    // devtool: 'source-map',
     stats: 'normal',
     // externals: [nodeExternals()], // 忽略 node_modules
     module: {
@@ -45,47 +46,19 @@ module.exports = {
         {
           test: /\.js$/i,
           use: [
-            // {
-            //   loader: 'thread-loader',
-            // },
+            {
+              loader: './tools/prismjs-loader',
+            },
+          ],
+        },
+        {
+          test: /\.js$/i,
+          exclude: /node_modules/,
+          use: [
             {
               loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env', { modules: 'auto' }],
-                plugins: [
-                  [
-                    'prismjs',
-                    {
-                      languages: [
-                        'javascript',
-                        'typescript',
-                        'css',
-                        'markup',
-                        'json',
-                        'json5',
-                        'bash',
-                        'go',
-                        'java',
-                        'python',
-                        'ruby',
-                        'sql',
-                        'yaml',
-                        'stylus',
-                        'kotlin',
-                        'rust',
-                      ],
-                      plugins: [],
-                      css: false,
-                    },
-                  ],
-                ],
-              },
             },
-            // {
-            //   loader: 'eslint-loader',
-            // },
           ],
-          // exclude: /node_modules/,
         },
         {
           test: /\.ts$/,
@@ -127,7 +100,6 @@ module.exports = {
     optimization: {
       minimize: false,
     },
-    devtool: 'source-map', // 生成 js sourcemap
     performance: {
       hints: 'warning',
       assetFilter: (assetFilename) => assetFilename.endsWith('.js'),

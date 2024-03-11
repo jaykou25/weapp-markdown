@@ -36,7 +36,20 @@
   </view>
 </block>
 
-<block wx:else="{{node.type === 'element'}}">
+<!-- 处理a标签, 在小程序中a标签不能跳转 -->
+<view
+  wx:elif="{{node.tagName === 'a'}}"
+  class="{{node.tagName}}"
+  data-href="{{node.properties.href}}"
+  data-title="{{node.properties.linkText}}"
+  bindtap="handleLink"
+>
+  <block wx:if="{{node.children}}">
+    <tree-node wx:for="{{node.children}}" wx:key="index" outer-row="{{false}}" node="{{item}}" />
+  </block>
+</view>
+
+<block wx:elif="{{node.type === 'element'}}">
   <view
     class="{{node.tagName}} {{outerRow ? 'outerRow' : ''}} {{util.getClass(node.properties)}}"
     style="{{node.properties.style}} {{node.properties.start ? 'counter-reset: item ' + (node.properties.start - 1) : ''}}"

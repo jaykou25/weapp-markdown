@@ -1,5 +1,43 @@
 @import 'material-palenight.wxss';
 
+.weui-half-screen-dialog__hd__main + .weui-half-screen-dialog__hd__side {
+  right: 0;
+}
+
+.cell-left {
+  flex: none;
+  width: 80px;
+  color: var(--weui-FG-1);
+  font-size: 14px;
+}
+
+.cell-middle {
+  flex: auto;
+  text-align: right;
+  font-size: 14px;
+}
+
+.cell-middle.url {
+  font-style: italic;
+}
+
+.cell-right {
+  flex: none;
+  margin-left: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
 .inline {
   display: inline;
   white-space: break-spaces;

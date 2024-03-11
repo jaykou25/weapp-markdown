@@ -28,7 +28,13 @@ Component({
             id: 4,
             title: '代码 Code',
             value:
-              "### git 相关\n使用 `git status` 列出所有尚未提交的新文件或是修改过的文件.\n\n```bash\ngit status\ngit add\ngit commit\n```\n\n### vue 相关\n举例来说，`onMounted` 钩子可以用来在组件完成初始渲染并创建 DOM 节点后运行代码：\n\n```html\n<script setup>\nimport { onMounted } from 'vue'\n\nonMounted(() => {\n  console.log(`the component is now mounted.`)\n})\n</script>\n```\n",
+              "### git 相关\n使用 `git status` 列出所有尚未提交的新文件或是修改过的文件.\n\n```bash\ngit status\ngit add\ngit commit\n```\n\n### html 相关\n举例来说，`onMounted` 钩子可以用来在组件完成初始渲染并创建 DOM 节点后运行代码：\n\n```html\n<script setup>\nimport { onMounted } from 'vue'\n\nonMounted(() => {\n  console.log(`the component is now mounted.`)\n})\n</script>\n```\n",
+          },
+          {
+            id: 5,
+            title: '链接 Link',
+            value:
+              "有两种方式创建链接, 一种是 markdown 语法, 另一种是 html 语法.\n\n1. markdown 语法 `[链接文本](url)`\n示例: [苹果官网](https://www.apple.com.cn)\n\n2. html 语法 `<a href='url'>链接文本</a>`\n示例: <a target='_blank' href='https://www.apple.com.cn'>苹果官网</a>",
           },
         ],
       },

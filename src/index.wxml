@@ -1,20 +1,71 @@
 <wxs module="m1">
-	var format = function(val) {
-	return JSON.stringify(val)
-	};
-
-	module.exports.format = format;
+  var format = function(val) { return JSON.stringify(val) }; module.exports.format = format;
 </wxs>
 
 <view class="markdown-body">
-	<block wx:for="{{tree.children}}" wx:key="index">
-		<tree-node node="{{item}}" />
-	</block>
-	<!-- <tree-node
-		 wx:for="{{tree.children}}"
-		 wx:key="index"
-		 outer-row="{{true}}"
-		 node="{{item}}"
-		/> -->
-</view>
+  <block wx:for="{{tree.children}}" wx:key="index">
+    <tree-node bindlinkClick="linkClick" node="{{item}}" />
+  </block>
 
+  <!-- 链接弹窗, 用于查看链接和复制链接地址 -->
+  <view
+    wx:if="{{linkCSSShow || linkShow}}"
+    aria-role="dialog"
+    aria-modal="true"
+    aria-labelledby="js_dialog1_title"
+  >
+    <view
+      class="weui-mask {{linkCSSShow ? 'weui-animate_fade-in' : 'weui-animate_fade-out'}}"
+      bindtap="closeLinkDialog"
+    ></view>
+    <view
+      class="weui-half-screen-dialog {{linkCSSShow ? 'weui-animate_slide-up' : 'weui-animate_slide-down'}}"
+    >
+      <view class="weui-half-screen-dialog__hd">
+        <view class="weui-half-screen-dialog__hd__side" />
+        <view class="weui-half-screen-dialog__hd__main">
+          <strong class="weui-half-screen-dialog__title" id="js_dialog1_title">链接信息</strong>
+        </view>
+        <view class="weui-half-screen-dialog__hd__side">
+          <view aria-role="button" class="weui-btn_icon weui-wa-hotarea" bindtap="closeLinkDialog"
+            >关闭<i class="weui-icon-close-thin"></i
+          ></view>
+          <view
+            style="display: none;"
+            aria-role="button"
+            class="weui-icon-btn weui-icon-btn_close"
+            bindtap="close"
+            >关闭</view
+          >
+        </view>
+      </view>
+      <view class="weui-half-screen-dialog__bd">
+        <view class="flex items-start">
+          <text class="cell-left">链接标题</text>
+          <text class="cell-middle">{{linkText}}</text>
+          <view class="cell-right">
+            <image
+              bindtap="copy"
+              data-value="{{linkText}}"
+              src="./assets/copy.svg"
+              style="width: 20px; height: 20px; margin-top: -2px"
+            />
+          </view>
+        </view>
+
+        <view class="flex items-start" style="margin-top: 10px">
+          <text class="cell-left">链接地址</text>
+          <text class="cell-middle url">{{linkHref}}</text>
+          <view class="cell-right">
+            <image
+              bindtap="copy"
+              data-value="{{linkHref}}"
+              src="./assets/copy.svg"
+              style="width: 20px; height: 20px; margin-top: -2px"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
