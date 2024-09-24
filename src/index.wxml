@@ -4,7 +4,7 @@
 
 <view class="markdown-body">
   <block wx:for="{{tree.children}}" wx:key="index">
-    <tree-node bindlinkClick="linkClick" node="{{item}}" />
+    <tree-node bindlinkClick="linkClick" node="{{item}}" bindimgPreview="previewImage" />
   </block>
 
   <!-- 链接弹窗, 用于查看链接和复制链接地址 -->

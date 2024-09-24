@@ -62,5 +62,14 @@ Component({
         },
       })
     },
+    // 小程序图片点击后的全屏预览
+    previewImage(e) {
+      const { detail } = e
+      const { imgsrc } = detail
+      wx.previewImage({
+        current: imgsrc,
+        urls: this.data.tree.srcs,
+      })
+    },
   },
 })

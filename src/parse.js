@@ -71,7 +71,7 @@ function handleCode(node) {
  * 小程序页面拿到 hast 后就能遍历节点进行渲染
  */
 
-function markdownParse(text) {
+export function markdownParse(text) {
   /**
    * fromMarkdown 函数的作用是将 markdown 文字转换成 mdast(markdown 抽象语法树)
    * 它支持传入扩展, 用来识别一些特定的语法, 比如 GFM, math 等.
@@ -83,8 +83,6 @@ function markdownParse(text) {
     extensions: [gfm(), frontmatter()],
     mdastExtensions: [gfmFromMarkdown(), frontmatterFromMarkdown()],
   })
-
-  console.log('mdast', mdast)
 
   visit(mdast, function (node) {
     /** 将 markdown ast 中的 code 节点的 lang 属性映射到 hast 中 */
@@ -109,8 +107,6 @@ function markdownParse(text) {
    * raw 函数的作用是把上面的 hast 树中的 type 为 raw 的部分转化成 html 树.
    */
   const hastWithRaw = raw(hast)
-
-  console.log('hastWithRaw', hastWithRaw)
 
   /**
    * 关于换行的问题
@@ -154,6 +150,13 @@ function markdownParse(text) {
         if (isNodeBlock(sib)) {
           return true
         }
+
+        // 如果上兄弟节点是 img, 并且下兄弟节点是 figcaption, 那么这个节点也要移除
+        const sibAfter = parent.children[index + 1]
+
+        if (sibAfter && sibAfter.tagName === 'figcaption') {
+          return true
+        }
       }
       return false
     }
@@ -164,7 +167,10 @@ function markdownParse(text) {
   /**
    * 遍历 element 元素:
    * 处理 tagName: pre > code, 将内容高亮
+   * 处理 a 标签
+   * 收集所有的图片地址, 用于图片集预览
    */
+  const srcs = []
   visit(hastWithRaw, (node) => {
     if (node.type === 'element') {
       if (node.tagName === 'pre') {
@@ -184,19 +190,28 @@ function markdownParse(text) {
       if (node.tagName === 'a') {
         setProperties(node, { linkText: getHastNodeTextValue(node) })
       }
+
+      if (node.tagName === 'img') {
+        srcs.push(node.properties.src)
+      }
     }
   })
 
   // 将一些属性加入白名单
   defaultSchema.attributes['video'] = ['src', 'controls', 'style']
   defaultSchema.tagNames.push('video')
+  defaultSchema.tagNames.push('figure')
+  defaultSchema.tagNames.push('figcaption')
   defaultSchema.attributes['*'].push('style')
   defaultSchema.attributes['*'].push('className')
   defaultSchema.attributes['*'].push('linkText')
 
-  console.log('hast with remove', hastWithRaw)
+  const afterSanitize = sanitize(hastWithRaw, defaultSchema)
 
-  return sanitize(hastWithRaw, defaultSchema)
+  // srcs 要去重
+  const srcsSet = new Set(srcs)
+  afterSanitize.srcs = Array.from(srcsSet)
+  return afterSanitize
 }
 
-export { markdownParse }
+export default { markdownParse }

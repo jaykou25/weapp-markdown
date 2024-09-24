@@ -5,7 +5,7 @@ Component({
     value: '',
   },
   methods: {
-    onShow() {
+    onLoad() {
       console.log('value', DATA.value)
       this.setData({
         value: DATA.value,

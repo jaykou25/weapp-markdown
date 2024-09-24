@@ -1,59 +1,54 @@
 <wxs module="util">
-  var getClass = function (properties) { if (properties) { if (properties.className) { return
-  properties.className.join(', ') } } return '' }; var isValueEmpty = function (val) { return val
-  === '\\n' || val.trim() === '' }; module.exports.getClass = getClass; module.exports.isValueEmpty
-  = isValueEmpty;
-</wxs>
+  var getClass = function (properties) { 
+    var ret = '';
 
+    if (properties) { 
+      if (properties.className) { 
+        ret += properties.className.join(', ') 
+      } 
+
+      if (properties.align) {
+        ret += ' align-' + properties.align
+      }
+    } 
+      
+    return ret; 
+  }; 
+  
+  var isValueEmpty = function (val) { return val
+  === '\\n' || val.trim() === '' }; 
+  
+  module.exports.getClass = getClass; 
+  module.exports.isValueEmpty = isValueEmpty;
+</wxs>
 <!-- 处理文本节点 -->
 <block wx:if="{{node.type==='text'}}">
   <!-- space 显示连续空格很重要, 对于 pre 内容对齐很有用, ensp 为中文字符空格一半大小, emsp 中文字符空格大小(太宽了) -->
   <text user-select="{{false}}" decode space="ensp">{{node.value}}</text>
 </block>
-
 <!-- 单独处理 pre 节点, 是因为 pre 节点紧跟着的 code 节点需要单独处理 -->
 <block wx:elif="{{node.tagName === 'pre'}}">
   <view class="{{node.tagName}}">
     <block wx:if="{{node.children}}">
-      <tree-node
-        wx:for="{{node.children}}"
-        wx:key="index"
-        is-block-code="{{item.tagName === 'code'}}"
-        outer-row="{{false}}"
-        node="{{item}}"
-        can-play="{{item.properties.canPlay}}"
-        isPlaying="{{isPlaying}}"
-        playingUuid="{{playingUuid}}"
-      />
+      <tree-node wx:for="{{node.children}}" wx:key="index" is-block-code="{{item.tagName === 'code'}}" outer-row="{{false}}" node="{{item}}" can-play="{{item.properties.canPlay}}" isPlaying="{{isPlaying}}" playingUuid="{{playingUuid}}" />
     </block>
   </view>
 </block>
-
 <!-- 处理代码块 -->
 <block wx:elif="{{isBlockCode}}">
   <view class="code hljs {{util.getClass(node.properties)}}">
     <rich-text wx:for="{{node.children}}" wx:key="index" nodes="{{item.value}}" />
   </view>
 </block>
-
 <!-- 处理a标签, 在小程序中a标签不能跳转 -->
-<view
-  wx:elif="{{node.tagName === 'a'}}"
-  class="{{node.tagName}}"
-  data-href="{{node.properties.href}}"
-  data-title="{{node.properties.linkText}}"
-  bindtap="handleLink"
->
+<view wx:elif="{{node.tagName === 'a'}}" class="{{node.tagName}}" data-href="{{node.properties.href}}" data-title="{{node.properties.linkText}}" bindtap="handleLink">
   <block wx:if="{{node.children}}">
     <tree-node wx:for="{{node.children}}" wx:key="index" outer-row="{{false}}" node="{{item}}" />
   </block>
 </view>
-
+<image wx:elif="{{node.tagName === 'img'}}" style="{{node.properties.width ? 'width:' + node.properties.width + 'px' : ''}}" src="{{node.properties.src}}" show-menu-by-longpress mode="widthFix" data-imgsrc="{{node.properties.src}}" bindtap='listenImgPreview' />
 <block wx:elif="{{node.type === 'element'}}">
-  <view
-    class="{{node.tagName}} {{outerRow ? 'outerRow' : ''}} {{util.getClass(node.properties)}}"
-    style="{{node.properties.style}} {{node.properties.start ? 'counter-reset: item ' + (node.properties.start - 1) : ''}}"
-  >
+  <view class="{{node.tagName}} {{outerRow ? 'outerRow' : ''}} {{util.getClass(node.properties)}}" style="{{node.properties.style}} {{node.properties.start ? 'counter-reset: item ' + (node.properties.start - 1) : ''}}">
     <block wx:if="{{node.children}}">
       <tree-node wx:for="{{node.children}}" wx:key="index" outer-row="{{false}}" node="{{item}}" />
     </block>

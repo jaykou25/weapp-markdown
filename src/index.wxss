@@ -460,6 +460,7 @@
 .markdown-body .span {
   display: inline;
 }
+
 /* 图例相关样式--begin */
 .markdown-body .figure {
   margin-top: 0;
@@ -472,6 +473,18 @@
   text-align: right;
   color: rgb(116, 25, 13);
   line-height: normal;
+}
+
+.markdown-body .align-center {
+  text-align: center;
+}
+
+.markdown-body .align-left {
+  text-align: left;
+}
+
+.markdown-body .align-right {
+  text-align: right;
 }
 /* 图例相关样式--end */
 

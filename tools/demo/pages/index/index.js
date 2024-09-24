@@ -1,4 +1,11 @@
 import { setValue } from '../../constant'
+import {
+  ImageCase,
+  ImageCaseFigure,
+  ImageCaseFigure2,
+  ImageCaseTwoInRowH5,
+  ImageCaseTwoInRowH52,
+} from './case'
 
 Component({
   data: {
@@ -36,21 +43,46 @@ Component({
             value:
               "有两种方式创建链接, 一种是 markdown 语法, 另一种是 html 语法.\n\n1. markdown 语法 `[链接文本](url)`\n示例: [苹果官网](https://www.apple.com.cn)\n\n2. html 语法 `<a href='url'>链接文本</a>`\n示例: <a target='_blank' href='https://www.apple.com.cn'>苹果官网</a>",
           },
+          {
+            id: 6,
+            title: '图像 Image',
+            value: ImageCase,
+          },
         ],
       },
       {
         title: '测试用例',
         data: [
           {
-            id: 4,
+            id: 101,
             title: '换行',
             value:
               '纯段落\n纯段落2\n\n段落含样式:\n**加粗**和*斜体*\n\n纯段落含样式:\n之前**加粗**和*斜体*\n\n段落含样式:\n**加粗**\n和\n*斜体*\n\n段落3',
           },
           {
-            id: 3,
+            id: 102,
             title: 'raw',
             value: '1 <p>hello</p> 2 \n <p>two</p>',
+          },
+          {
+            id: 103,
+            title: '两个h5图片紧挨着写',
+            value: ImageCaseTwoInRowH5,
+          },
+          {
+            id: 104,
+            title: '两个h5图片换行写',
+            value: ImageCaseTwoInRowH52,
+          },
+          {
+            id: 105,
+            title: 'figure标签紧挨着写',
+            value: ImageCaseFigure,
+          },
+          {
+            id: 106,
+            title: 'figure标签换行写',
+            value: ImageCaseFigure2,
           },
           {
             id: 'x',
