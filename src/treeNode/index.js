@@ -11,6 +11,10 @@ Component({
       type: Boolean,
       value: false,
     },
+    blockText: {
+      type: String,
+      value: '',
+    },
   },
 
   lifetimes: {
@@ -22,6 +26,13 @@ Component({
     },
   },
   methods: {
+    handleBlockLongPress(e) {
+      const { dataset } = e.currentTarget
+      this.triggerEvent('blockLongPress', dataset, {
+        bubbles: true,
+        composed: true,
+      })
+    },
     handleLink(e) {
       const { dataset } = e.currentTarget
       this.triggerEvent('linkClick', dataset, {

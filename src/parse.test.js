@@ -1,4 +1,5 @@
 import {
+  BlockLongPressCase,
   ImageCase,
   ImageCaseFigure2,
   ImageCaseTwoInRowH5,
@@ -70,5 +71,26 @@ describe('在解析时收集所有的图片', () => {
 
     const firstSrc = ret.srcs[0]
     expect(firstSrc.includes('https://th.bing.com')).toBe(true)
+  })
+})
+
+describe('段落信息', () => {
+  test('每个 element 节点上挂上 blockText 属性', () => {
+    const ret = markdownParse(BlockLongPressCase)
+    const olNode = ret.children[1]
+    const liNode = olNode.children[0]
+    expect(liNode.properties.blockText).toBe(
+      'markdown 语法 [链接文本](url)\n示例: 苹果官网这种方法比较常见.'
+    )
+    const pNode = liNode.children[0]
+    expect(pNode.properties.blockText).toBe(
+      'markdown 语法 [链接文本](url)\n示例: 苹果官网'
+    )
+
+    const codeNode = pNode.children[1]
+    expect(codeNode.properties.blockText).toBe('[链接文本](url)')
+
+    const insideLiNode = liNode.children[1].children[0]
+    expect(insideLiNode.properties.blockText).toBe('这种方法比较常见.')
   })
 })

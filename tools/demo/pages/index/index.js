@@ -1,5 +1,6 @@
 import { setValue } from '../../constant'
 import {
+  BlockLongPressCase,
   ImageCase,
   ImageCaseFigure,
   ImageCaseFigure2,
@@ -48,6 +49,11 @@ Component({
             title: '图像 Image',
             value: ImageCase,
           },
+          {
+            id: 7,
+            title: '长按段落呼出用于复制段落信息',
+            value: BlockLongPressCase,
+          },
         ],
       },
       {
@@ -84,6 +90,7 @@ Component({
             title: 'figure标签换行写',
             value: ImageCaseFigure2,
           },
+
           {
             id: 'x',
             title: 'temp',

@@ -13,6 +13,9 @@ Component({
     linkShow: false,
     linkHref: '',
     linkText: '',
+    blockCSSShow: false,
+    blockShow: false,
+    blockText: '',
   },
   observers: {
     value: function (value) {
@@ -43,6 +46,13 @@ Component({
         this.setData({ linkShow: false })
       }, 400)
     },
+    closeBlockDialog() {
+      this.setData({ blockCSSShow: false })
+
+      setTimeout(() => {
+        this.setData({ blockShow: false })
+      }, 400)
+    },
     linkClick(e) {
       const { detail } = e
       const { href, title } = detail
@@ -51,6 +61,16 @@ Component({
         linkShow: true,
         linkHref: href,
         linkText: title,
+      })
+    },
+    blockLongPress(e) {
+      console.log('触发blockLongPress', e)
+      const { detail } = e
+      const { blockText } = detail
+      this.setData({
+        blockCSSShow: true,
+        blockShow: true,
+        blockText: blockText,
       })
     },
     copy(e) {

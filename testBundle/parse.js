@@ -20416,7 +20416,7 @@ var import_prismjs = __toESM(require_prism());
 
 // src/utils.js
 var isNodeBlock = (node2) => {
-  return node2.tagName === "p" || node2.tagName === "blockquote" || node2.tagName === "pre" || node2.tagName === "li";
+  return node2.tagName === "p" || node2.tagName === "blockquote" || node2.tagName === "pre" || node2.tagName === "li" || node2.tagName === "ol" || node2.tagName === "ul";
 };
 var setHProperties = (node2, properties2) => {
   if (!node2.data) node2.data = {};
@@ -20543,6 +20543,7 @@ function markdownParse(text8) {
       if (node2.tagName === "img") {
         srcs.push(node2.properties.src);
       }
+      setProperties(node2, { blockText: getHastNodeTextValue(node2) });
     }
   });
   defaultSchema.attributes["video"] = ["src", "controls", "style"];
@@ -20552,6 +20553,7 @@ function markdownParse(text8) {
   defaultSchema.attributes["*"].push("style");
   defaultSchema.attributes["*"].push("className");
   defaultSchema.attributes["*"].push("linkText");
+  defaultSchema.attributes["*"].push("blockText");
   const afterSanitize = sanitize(hastWithRaw, defaultSchema);
   const srcsSet = new Set(srcs);
   afterSanitize.srcs = Array.from(srcsSet);

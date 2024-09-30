@@ -20,7 +20,9 @@ export const isNodeBlock = (node) => {
     node.tagName === 'p' ||
     node.tagName === 'blockquote' ||
     node.tagName === 'pre' ||
-    node.tagName === 'li'
+    node.tagName === 'li' ||
+    node.tagName === 'ol' ||
+    node.tagName === 'ul'
   )
 }
 

@@ -169,6 +169,7 @@ export function markdownParse(text) {
    * 处理 tagName: pre > code, 将内容高亮
    * 处理 a 标签
    * 收集所有的图片地址, 用于图片集预览
+   * 给 block 节点赋上 blockText 属性
    */
   const srcs = []
   visit(hastWithRaw, (node) => {
@@ -194,6 +195,8 @@ export function markdownParse(text) {
       if (node.tagName === 'img') {
         srcs.push(node.properties.src)
       }
+
+      setProperties(node, { blockText: getHastNodeTextValue(node) })
     }
   })
 
@@ -205,6 +208,7 @@ export function markdownParse(text) {
   defaultSchema.attributes['*'].push('style')
   defaultSchema.attributes['*'].push('className')
   defaultSchema.attributes['*'].push('linkText')
+  defaultSchema.attributes['*'].push('blockText')
 
   const afterSanitize = sanitize(hastWithRaw, defaultSchema)
 
