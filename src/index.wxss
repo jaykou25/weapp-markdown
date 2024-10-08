@@ -1,5 +1,7 @@
 @import 'material-palenight.wxss';
 
+@import 'weui.wxss';
+
 .weui-half-screen-dialog__hd__main + .weui-half-screen-dialog__hd__side {
   right: 0;
 }

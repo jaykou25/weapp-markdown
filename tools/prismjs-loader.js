@@ -1,5 +1,5 @@
-var fs = require('fs')
-var path = require('path')
+// var fs = require('fs')
+// var path = require('path')
 
 /**
  * 这是一个 webpack loader, 用于更改 prismjs 中语言包的变量名
@@ -21,16 +21,20 @@ module.exports = function (content) {
       /** 如果是立即执行函数 */
       if (/\}\(Prism\)/.test(content)) {
         _content = content.replace(/\}\(Prism\)/g, '}(global.Prism)')
+      } else if (/\}\)\(Prism\)/.test(content)) {
+        _content = content.replace(/\}\)\(Prism\)/g, '})(global.Prism)')
       } else {
         _content = content.replace(/Prism\./g, 'global.Prism.')
       }
 
       /** 可以输出内容到文件 */
+      /**
       const basename = path.basename(this.resourcePath)
       const p = path.join(__dirname, 'logs', `${basename}.txt`)
       fs.writeFile(p, _content, (err) => {
         if (err) throw err
       })
+       */
 
       return _content
     }

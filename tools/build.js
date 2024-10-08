@@ -28,10 +28,8 @@ function wxss(wxssFileList) {
 
   return gulp
     .src(wxssFileList, { cwd: srcPath, base: srcPath })
-    .pipe(checkWxss.start()) // 开始处理 import
     .pipe(gulpif(wxssConfig.less && wxssConfig.sourcemap, sourcemaps.init()))
     .pipe(gulpif(wxssConfig.less, less({ paths: [srcPath] })))
-    .pipe(checkWxss.end()) // 结束处理 import
     .pipe(rename({ extname: '.wxss' }))
     .pipe(
       gulpif(wxssConfig.less && wxssConfig.sourcemap, sourcemaps.write('./'))

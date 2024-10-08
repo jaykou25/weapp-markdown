@@ -1,7 +1,6 @@
 const path = require('path')
 
 const webpack = require('webpack')
-const nodeExternals = require('webpack-node-externals')
 
 const isDev = process.argv.indexOf('--develop') >= 0
 const isWatch = process.argv.indexOf('--watch') >= 0
@@ -35,12 +34,9 @@ module.exports = {
     mode: 'production',
     output: {
       filename: '[name].js',
-      // libraryTarget: 'commonjs2',
     },
     target: 'node',
-    // devtool: 'source-map',
     stats: 'normal',
-    // externals: [nodeExternals()], // 忽略 node_modules
     module: {
       rules: [
         {
@@ -53,7 +49,6 @@ module.exports = {
         },
         {
           test: /\.js$/i,
-          exclude: /node_modules/,
           use: [
             {
               loader: 'babel-loader',
@@ -62,16 +57,9 @@ module.exports = {
         },
         {
           test: /\.ts$/,
-          exclude: /node_modules/,
           use: [
-            // {
-            //   loader: 'thread-loader',
-            // },
             {
               loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env'],
-              },
             },
             {
               loader: 'ts-loader',
@@ -106,5 +94,5 @@ module.exports = {
     },
   },
 
-  copy: ['./assets', 'material-palenight.wxss'], // 将会复制到目标目录
+  copy: ['./assets', 'material-palenight.wxss', 'weui.wxss'], // 将会复制到目标目录
 }
