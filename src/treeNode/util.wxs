@@ -1,16 +1,17 @@
 var getClass = function (properties) {
+  var ret = ''
   if (properties) {
     if (properties.className) {
-      return properties.className.join(', ')
+      ret += properties.className.join(', ')
+    }
+
+    if (properties.align) {
+      ret += ' align-' + properties.align
     }
   }
-
-  return ''
+  return ret
 }
 
-var isValueEmpty = function (val) {
-  return val === '\\n' || val.trim() === ''
+module.exports = {
+  getClass: getClass,
 }
-
-module.exports.getClass = getClass
-module.exports.isValueEmpty = isValueEmpty

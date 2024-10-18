@@ -2,55 +2,34 @@
 
 @import 'weui.wxss';
 
-.weui-half-screen-dialog__hd__main + .weui-half-screen-dialog__hd__side {
-  right: 0;
+.weapp-markdown-container {
+  height: 100%;
 }
 
-.cell-left {
-  flex: none;
-  width: 80px;
-  color: var(--weui-FG-1);
-  font-size: 14px;
+.scrollview {
+  height: 100%;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.cell-middle {
-  flex: auto;
-  text-align: right;
-  font-size: 14px;
+/* 默认 padding 为 15px, 可以通过组件传 style 来更改 */
+.markdown-body {
+  padding: 15px;
 }
 
-.long-press-block {
-  font-size: 16px;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.cell-middle.url {
-  font-style: italic;
-}
-
-.cell-right {
-  flex: none;
-  margin-left: 10px;
-}
-
-.flex {
-  display: flex;
-}
-
-.items-start {
-  align-items: flex-start;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.inline {
-  display: inline;
-  white-space: break-spaces;
+/* markdown 样式部分. 样式主要参考于 https://github.com/sindresorhus/github-markdown-css */
+.markdown-body {
+  --base-size-4: 0.25rem;
+  --base-size-8: 0.5rem;
+  --base-size-16: 1rem;
+  --base-size-24: 1.5rem;
+  --base-size-40: 2.5rem;
+  --base-text-weight-normal: 400;
+  --base-text-weight-medium: 500;
+  --base-text-weight-semibold: 600;
+  --fontStack-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  --fgColor-accent: Highlight;
 }
 
 @media (prefers-color-scheme: light) {
@@ -143,13 +122,13 @@
   mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
 }
 
-.markdown-body details,
-.markdown-body figcaption,
-.markdown-body figure {
+.markdown-body .details,
+.markdown-body .figcaption,
+.markdown-body .figure {
   display: block;
 }
 
-.markdown-body summary {
+.markdown-body .summary {
   display: list-item;
 }
 
@@ -187,16 +166,16 @@
   text-decoration: line-through;
 }
 
-.markdown-body dfn {
+.markdown-body .dfn {
   font-style: italic;
 }
 
-.markdown-body mark {
+.markdown-body .mark {
   background-color: var(--color-attention-subtle);
   color: var(--color-fg-default);
 }
 
-.markdown-body small {
+.markdown-body .small {
   font-size: 90%;
 }
 
@@ -230,14 +209,14 @@
 }
 
 .markdown-body .code,
-.markdown-body kbd,
+.markdown-body .kbd,
 .markdown-body .pre,
-.markdown-body samp {
+.markdown-body .samp {
   font-family: monospace;
   font-size: 1em;
 }
 
-.markdown-body figure {
+.markdown-body .figure {
   margin: 1em 40px;
 }
 
@@ -382,37 +361,18 @@
 .markdown-body .h4,
 .markdown-body .h5,
 .markdown-body .h6 {
+  margin-top: var(--base-size-24);
+  margin-bottom: var(--base-size-16);
   font-weight: var(--base-text-weight-semibold, 600);
   line-height: 1.25;
 }
 
-.markdown-body .as-h1 > view,
-.markdown-body .as-h2 > view,
-.markdown-body .as-h3 > view,
-.markdown-body .as-h4 > view,
-.markdown-body .as-h5 > view,
-.markdown-body .as-h6 > view {
-  margin-bottom: 16px;
-}
-
 .markdown-body .h1 {
+  margin: 0.67em 0;
   font-weight: var(--base-text-weight-semibold, 600);
   padding-bottom: 0.3em;
   font-size: 2em;
   border-bottom: 0.5px solid var(--color-border-muted);
-}
-
-.markdown-body .as-h1 > view {
-  margin: 0.67em 0;
-}
-
-/*
-  把这个margin-top放在组件内的第一个view元素上是可以与上文的p元素形成margin collapse.
-  直接放在组件外层元素上的margin无效
-*/
-.markdown-body .as-h2 > view {
-  margin-top: 4rem;
-  margin-bottom: 1.8rem;
 }
 
 .markdown-body .h2 {
@@ -422,16 +382,6 @@
   border-bottom: 0.5px solid var(--color-border-muted);
 }
 
-.markdown-body .as-h2 + .as-h3 > view {
-  margin-top: 0;
-}
-/*
-  把这个margin-top放在组件内的第一个view元素上是可以与上文的p元素形成margin collapse.
-  直接放在组件外层元素上的margin无效
-*/
-.markdown-body .as-h3 > view {
-  margin-top: 3rem;
-}
 .markdown-body .h3 {
   font-weight: var(--base-text-weight-semibold, 600);
   font-size: 1.25em;
@@ -1310,4 +1260,67 @@
 
 .markdown-body .as:first-child > view {
   margin-top: 0;
+}
+
+/* 自定义部分 */
+.weui-half-screen-dialog__hd__main + .weui-half-screen-dialog__hd__side {
+  right: 0;
+}
+
+.blockNodeStyle {
+  position: relative;
+}
+
+.cell-left {
+  flex: none;
+  width: 80px;
+  color: var(--weui-FG-1);
+  font-size: 14px;
+}
+
+.cell-middle {
+  flex: auto;
+  text-align: right;
+  font-size: 14px;
+}
+
+.long-press-block {
+  font-size: 16px;
+}
+
+/* weui-half-screen-dialog 上有 padding 的, 这会导制当有滚动条的时候, 滚动条不在最右边上 */
+/* 所以这里让 body 靠右 */
+.long-press-body {
+  margin-right: calc(-24px - env(safe-area-inset-right));
+  padding-right: calc(24px + env(safe-area-inset-right));
+}
+
+.text-left {
+  text-align: left;
+}
+
+.cell-middle.url {
+  font-style: italic;
+}
+
+.cell-right {
+  flex: none;
+  margin-left: 10px;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.inline {
+  display: inline;
+  white-space: break-spaces;
 }

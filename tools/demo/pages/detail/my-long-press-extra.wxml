@@ -1,0 +1,8 @@
+<wxs src='./my-block-extra.wxs' module="util" />
+<block wx:if='{{node.properties.isLeafBlockNode}}'>
+  <view class="weui-bottom-fixed-opr" style="padding-top: 24px">
+    <navigator class="weui-btn weui-btn_default" id="js_btn" aria-role="button" url="javascript:;">
+      开始番茄
+    </navigator>
+  </view>
+</block>

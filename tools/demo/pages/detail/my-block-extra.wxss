@@ -1,0 +1,5 @@
+.slot-container {
+  position: absolute;
+  right: -10px;
+  top: 0;
+}

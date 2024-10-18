@@ -1,0 +1,6 @@
+<wxs src='./my-block-extra.wxs' module="util" />
+<block wx:if='{{node.properties.isLeafBlockNode}}'>
+  <view class="slot-container">
+    <image src='./assets/comment.png' style="width: 15px; margin-bottom: -1px" mode='widthFix' />
+  </view>
+</block>

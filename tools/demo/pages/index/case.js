@@ -50,3 +50,37 @@ export const BlockLongPressCase = `
    1. 这种方法不太常见.
    2. 但是也有好处, 比如可以在新标签打开.
 `
+
+export const CodeCase = `
+### git 相关
+使用 \`git status\` 列出所有尚未提交的新文件或是修改过的文件.
+
+\`\`\`bash
+git status
+git add
+git commit
+\`\`\`
+
+### html 相关
+举例来说，\`onMounted\` 钩子可以用来在组件完成初始渲染并创建 DOM 节点后运行代码：
+
+\`\`\`html
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  console.log(\`the component is now mounted.\`)
+})
+</script>
+\`\`\`
+`
+
+export const LinkCase = `
+有两种方式创建链接, 一种是 markdown 语法, 另一种是 html 语法.
+
+1. markdown 语法 \`[链接文本](url)\`
+示例: [苹果官网](https://www.apple.com.cn)
+
+2. html 语法 \`<a href='url'>链接文本</a>\`
+示例: <a target='_blank' href='https://www.apple.com.cn'>苹果官网</a>
+`

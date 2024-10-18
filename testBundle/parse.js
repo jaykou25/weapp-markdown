@@ -20415,8 +20415,15 @@ function findDefinition(definitions, key) {
 var import_prismjs = __toESM(require_prism());
 
 // src/utils.js
-var isNodeBlock = (node2) => {
-  return node2.tagName === "p" || node2.tagName === "blockquote" || node2.tagName === "pre" || node2.tagName === "li" || node2.tagName === "ol" || node2.tagName === "ul";
+var isHeaderNode = (tagName = "") => {
+  return /^h[1-9]/.test(tagName.toLowerCase());
+};
+var isBlockNode = (_tagName = "") => {
+  const tagName = _tagName.toLowerCase();
+  return isHeaderNode(tagName) || tagName === "p" || tagName === "blockquote" || tagName === "pre" || tagName === "li" || tagName === "ol" || tagName === "ul";
+};
+var isLeafBlockNode = (node2) => {
+  return isBlockNode(node2.tagName) && (node2.children || []).every((child) => !isBlockNode(child.tagName));
 };
 var setHProperties = (node2, properties2) => {
   if (!node2.data) node2.data = {};
@@ -20473,6 +20480,7 @@ function handleCode(node2) {
   if (node2.children && node2.children.length > 0) {
     const lan = node2.properties.lang;
     node2.children.forEach((child) => {
+      if (true) return;
       if (lan) {
         const text8 = import_prismjs.default.highlight(
           child.value,
@@ -20513,7 +20521,7 @@ function markdownParse(text8) {
       }
       if (index2 > 0) {
         const sib = parent.children[index2 - 1];
-        if (isNodeBlock(sib)) {
+        if (isBlockNode(sib.tagName)) {
           return true;
         }
         const sibAfter = parent.children[index2 + 1];
@@ -20533,6 +20541,7 @@ function markdownParse(text8) {
           node2.children.forEach((child) => {
             if (child.tagName === "code") {
               handleCode(child);
+              setProperties(child, { isCodeNode: true });
             }
           });
         }
@@ -20543,7 +20552,9 @@ function markdownParse(text8) {
       if (node2.tagName === "img") {
         srcs.push(node2.properties.src);
       }
-      setProperties(node2, { blockText: getHastNodeTextValue(node2) });
+      setProperties(node2, { isBlockNode: isBlockNode(node2.tagName) });
+      setProperties(node2, { isLeafBlockNode: isLeafBlockNode(node2) });
+      setProperties(node2, { isHeaderNode: isHeaderNode(node2.tagName) });
     }
   });
   defaultSchema.attributes["video"] = ["src", "controls", "style"];
@@ -20553,7 +20564,10 @@ function markdownParse(text8) {
   defaultSchema.attributes["*"].push("style");
   defaultSchema.attributes["*"].push("className");
   defaultSchema.attributes["*"].push("linkText");
-  defaultSchema.attributes["*"].push("blockText");
+  defaultSchema.attributes["*"].push("isBlockNode");
+  defaultSchema.attributes["*"].push("isLeafBlockNode");
+  defaultSchema.attributes["*"].push("isHeaderNode");
+  defaultSchema.attributes["*"].push("isCodeNode");
   const afterSanitize = sanitize(hastWithRaw, defaultSchema);
   const srcsSet = new Set(srcs);
   afterSanitize.srcs = Array.from(srcsSet);

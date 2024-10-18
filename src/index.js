@@ -1,4 +1,5 @@
 import { markdownParse } from './parse'
+import { getHastNodeTextValue } from './utils'
 
 Component({
   properties: {
@@ -16,6 +17,8 @@ Component({
     blockCSSShow: false,
     blockShow: false,
     blockText: '',
+    blockNode: {},
+    canScroll: true,
   },
   observers: {
     value: function (value) {
@@ -66,11 +69,12 @@ Component({
     blockLongPress(e) {
       console.log('触发blockLongPress', e)
       const { detail } = e
-      const { blockText } = detail
+      const { parentNode } = detail
       this.setData({
         blockCSSShow: true,
         blockShow: true,
-        blockText: blockText,
+        blockText: getHastNodeTextValue(parentNode),
+        blockNode: parentNode,
       })
     },
     copy(e) {
@@ -90,6 +94,14 @@ Component({
         current: imgsrc,
         urls: this.data.tree.srcs,
       })
+    },
+    longPressContentTouchStart() {
+      console.log('longPressBodyStart')
+      // this.data.canScroll = false
+    },
+    longPressContentTouchEnd() {
+      console.log('longPressBodyEnd')
+      // this.data.canScroll = true
     },
   },
 })

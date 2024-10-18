@@ -7,13 +7,9 @@ Component({
       type: Object,
       value: {},
     },
-    isBlockCode: {
-      type: Boolean,
-      value: false,
-    },
-    blockText: {
-      type: String,
-      value: '',
+    parentNode: {
+      type: Object,
+      value: {},
     },
   },
 

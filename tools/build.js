@@ -161,17 +161,15 @@ class BuildTask {
             path.join(demoDist, 'project.config.json')
           )
         },
-        (done) => {
-          if (!isDemoExists) {
-            const demoSrc = config.demoSrc
-            const demoDist = config.demoDist
+        () => {
+          const demoSrc = config.demoSrc
+          const demoDist = config.demoDist
 
-            return gulp
-              .src('**/*', { cwd: demoSrc, base: demoSrc })
-              .pipe(gulp.dest(demoDist))
-          }
+          return gulp
+            .src('**/*', { cwd: demoSrc, base: demoSrc })
+            .pipe(gulp.dest(demoDist))
 
-          return done()
+          // return done()
         }
       )
     )
@@ -435,10 +433,12 @@ class BuildTask {
     gulp.task(`${id}-watch-demo`, () => {
       const demoSrc = config.demoSrc
       const demoDist = config.demoDist
-      const watchCallback = (filePath) =>
-        gulp
+      const watchCallback = (filePath) => {
+        console.log('监听到demo变化')
+        return gulp
           .src(filePath, { cwd: demoSrc, base: demoSrc })
           .pipe(gulp.dest(demoDist))
+      }
 
       return gulp
         .watch('**/*', { cwd: demoSrc, base: demoSrc })

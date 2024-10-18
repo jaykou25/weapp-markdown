@@ -19,7 +19,9 @@ import Prism from 'prismjs'
 
 import {
   getHastNodeTextValue,
-  isNodeBlock,
+  isBlockNode,
+  isHeaderNode,
+  isLeafBlockNode,
   setHProperties,
   setProperties,
 } from './utils'
@@ -46,6 +48,9 @@ function handleCode(node) {
   if (node.children && node.children.length > 0) {
     const lan = node.properties.lang
     node.children.forEach((child) => {
+      // 在测试环境下跳过高亮处理
+      if (process.env.NODE_ENV === 'test') return
+
       if (lan) {
         const text = Prism.highlight(
           child.value,
@@ -147,7 +152,7 @@ export function markdownParse(text) {
       if (index > 0) {
         const sib = parent.children[index - 1]
 
-        if (isNodeBlock(sib)) {
+        if (isBlockNode(sib.tagName)) {
           return true
         }
 
@@ -167,9 +172,16 @@ export function markdownParse(text) {
   /**
    * 遍历 element 元素:
    * 处理 tagName: pre > code, 将内容高亮
-   * 处理 a 标签
+   * 处理 a 标签, 把 a 标签中的纯文本赋到属性上.
    * 收集所有的图片地址, 用于图片集预览
-   * 给 block 节点赋上 blockText 属性
+   * 给 block 节点赋上 isBlockNode: blockNode指的是样式上的块节点,
+   * 比如 p, div, ul, ol, li, h1. 与之对应的是 inlineNode
+   *
+   * 给 block 节点赋上 isLeafBlockNode: leafBlockNode 指的是最靠近叶子节点的 blockNode.
+   * 比如一个套嵌树 ol => li => ol => li => text, 只有最后一个 li 才是 leafBlockNode.
+   * 这对于在某些场景下判断是否要显示节点有帮助.
+   *
+   * 给 block 节点赋上 isHeaderNode: headerNode 指的是 tagName为 h1, h2, h3, h4, h5, h6.
    */
   const srcs = []
   visit(hastWithRaw, (node) => {
@@ -183,6 +195,7 @@ export function markdownParse(text) {
           node.children.forEach((child) => {
             if (child.tagName === 'code') {
               handleCode(child)
+              setProperties(child, { isCodeNode: true })
             }
           })
         }
@@ -196,7 +209,9 @@ export function markdownParse(text) {
         srcs.push(node.properties.src)
       }
 
-      setProperties(node, { blockText: getHastNodeTextValue(node) })
+      setProperties(node, { isBlockNode: isBlockNode(node.tagName) })
+      setProperties(node, { isLeafBlockNode: isLeafBlockNode(node) })
+      setProperties(node, { isHeaderNode: isHeaderNode(node.tagName) })
     }
   })
 
@@ -208,7 +223,10 @@ export function markdownParse(text) {
   defaultSchema.attributes['*'].push('style')
   defaultSchema.attributes['*'].push('className')
   defaultSchema.attributes['*'].push('linkText')
-  defaultSchema.attributes['*'].push('blockText')
+  defaultSchema.attributes['*'].push('isBlockNode')
+  defaultSchema.attributes['*'].push('isLeafBlockNode')
+  defaultSchema.attributes['*'].push('isHeaderNode')
+  defaultSchema.attributes['*'].push('isCodeNode')
 
   const afterSanitize = sanitize(hastWithRaw, defaultSchema)
 

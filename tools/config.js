@@ -94,5 +94,10 @@ module.exports = {
     },
   },
 
-  copy: ['./assets', 'material-palenight.wxss', 'weui.wxss'], // 将会复制到目标目录
+  copy: [
+    './assets',
+    'material-palenight.wxss',
+    'weui.wxss',
+    './treeNode/util.wxs',
+  ], // 将会复制到目标目录
 }

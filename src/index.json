@@ -3,5 +3,9 @@
   "styleIsolation": "shared",
   "usingComponents": {
     "tree-node": "./treeNode/index"
+  },
+  "componentGenerics": {
+    "block-extra": true,
+    "long-press-extra": true
   }
 }

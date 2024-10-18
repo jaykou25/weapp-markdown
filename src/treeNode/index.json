@@ -4,5 +4,8 @@
   "usingComponents": {
     "tree-node": "./index",
     "table": "../table/index"
+  },
+  "componentGenerics": {
+    "block-extra-child": true
   }
 }

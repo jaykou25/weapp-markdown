@@ -1,5 +1,6 @@
 /**
  * 判断 node 节点是不是inline元素
+ * 这个方法暂时没有用到
  */
 export const isNodeInline = (node) => {
   return (
@@ -13,16 +14,36 @@ export const isNodeInline = (node) => {
 }
 
 /**
+ * 判断 node 节点是不是 header 元素
+ */
+export const isHeaderNode = (tagName = '') => {
+  return /^h[1-9]/.test(tagName.toLowerCase())
+}
+
+/**
  * 判断 node 节点是不是 block 元素
  */
-export const isNodeBlock = (node) => {
+export const isBlockNode = (_tagName = '') => {
+  const tagName = _tagName.toLowerCase()
   return (
-    node.tagName === 'p' ||
-    node.tagName === 'blockquote' ||
-    node.tagName === 'pre' ||
-    node.tagName === 'li' ||
-    node.tagName === 'ol' ||
-    node.tagName === 'ul'
+    isHeaderNode(tagName) ||
+    tagName === 'p' ||
+    tagName === 'blockquote' ||
+    tagName === 'pre' ||
+    tagName === 'li' ||
+    tagName === 'ol' ||
+    tagName === 'ul'
+  )
+}
+
+/**
+ * 判断 node 节点是不是 leafBlockNode 元素
+ * leafBlockNode 指的是最靠近叶子节点的 blockNode.
+ */
+export const isLeafBlockNode = (node) => {
+  return (
+    isBlockNode(node.tagName) &&
+    (node.children || []).every((child) => !isBlockNode(child.tagName))
   )
 }
 

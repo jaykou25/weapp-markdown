@@ -1,10 +1,13 @@
 import {
   BlockLongPressCase,
+  CodeCase,
   ImageCase,
   ImageCaseFigure2,
   ImageCaseTwoInRowH5,
   ImageCaseTwoInRowH52,
+  LinkCase,
 } from '../tools/demo/pages/index/case'
+import { visitTree } from './utils'
 
 const { markdownParse } = require('../testBundle/parse')
 
@@ -74,23 +77,45 @@ describe('在解析时收集所有的图片', () => {
   })
 })
 
-describe('段落信息', () => {
-  test('每个 element 节点上挂上 blockText 属性', () => {
-    const ret = markdownParse(BlockLongPressCase)
-    const olNode = ret.children[1]
-    const liNode = olNode.children[0]
-    expect(liNode.properties.blockText).toBe(
-      'markdown 语法 [链接文本](url)\n示例: 苹果官网这种方法比较常见.'
-    )
-    const pNode = liNode.children[0]
-    expect(pNode.properties.blockText).toBe(
-      'markdown 语法 [链接文本](url)\n示例: 苹果官网'
-    )
+describe('在解析节点时, 给节点赋上相应的值, 这些值在页面渲染时会用到', () => {
+  test('code 节点赋上 isCodeNode', () => {
+    const ret = markdownParse(CodeCase)
+    const pre = ret.children[2]
+    const codeNode = pre.children[0]
+    expect(codeNode.properties.isCodeNode).toBe(true)
+  })
 
-    const codeNode = pNode.children[1]
-    expect(codeNode.properties.blockText).toBe('[链接文本](url)')
+  test('a 标签节点赋上 linkText', () => {
+    const ret = markdownParse(LinkCase)
+    const ol = ret.children[1]
+    const li1 = ol.children[0]
 
-    const insideLiNode = liNode.children[1].children[0]
-    expect(insideLiNode.properties.blockText).toBe('这种方法比较常见.')
+    visitTree(li1, (node) => {
+      if (node.tagName === 'a') {
+        expect(node.properties.linkText).toBe('苹果官网')
+      }
+    })
+    const li2 = ol.children[1]
+
+    visitTree(li2, (node) => {
+      if (node.tagName === 'a') {
+        expect(node.properties.linkText).toBe('苹果官网')
+      }
+    })
+  })
+
+  test('给 block 节点赋上 isBlockNode', () => {
+    const ret = markdownParse('### header')
+    expect(ret.children[0].properties.isBlockNode).toBe(true)
+  })
+
+  test('给 block 节点赋上 isHeaderNode', () => {
+    const ret = markdownParse('# header')
+    expect(ret.children[0].properties.isHeaderNode).toBe(true)
+  })
+
+  test('给 block 节点赋上 isLeafBlockNode', () => {
+    const ret = markdownParse('# header')
+    expect(ret.children[0].properties.isLeafBlockNode).toBe(true)
   })
 })
