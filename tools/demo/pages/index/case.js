@@ -43,7 +43,6 @@ export const BlockLongPressCase = `
 
 1. markdown 语法 \`[链接文本](url)\`
 示例: [苹果官网](https://www.apple.com.cn)
-   1. 这种方法比较常见.
 
 2. html 语法 \`<a href='url'>链接文本</a>\`
 示例: <a target='_blank' href='https://www.apple.com.cn'>苹果官网</a>
@@ -83,4 +82,60 @@ export const LinkCase = `
 
 2. html 语法 \`<a href='url'>链接文本</a>\`
 示例: <a target='_blank' href='https://www.apple.com.cn'>苹果官网</a>
+`
+
+export const WrapLineCase = `
+1. 应该换行 \`x\\ny\`
+
+一行
+二行
+
+2. 含样式应该不换行
+
+**加粗**和*斜体*
+
+3. 含样式应该不换行
+
+beforeText**加粗**和*斜体*
+
+4. 含样式应该换行
+
+**加粗**\n和\n*斜体*
+`
+
+export const ListCase = `
+有序列表:
+1. 一行
+2. 二行
+
+无序列表:
+* 一行
+* 二行
+
+有序列表换行:
+1. 一行
+
+2. 二行
+
+有序列表自起一行:
+1. 一行
+   自起
+2. 二行
+
+待办
+- [X] 一行
+- [ ] 二行
+
+有序套嵌
+1. 一行
+   1. 内1
+   2. 内2
+2. 二行
+
+有序套嵌2
+1. 一行
+   1. 内1
+   2. 内2
+
+2. 二行
 `

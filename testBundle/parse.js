@@ -20505,16 +20505,25 @@ function markdownParse(text8) {
       setHProperties(node2, { lang: node2.lang });
     }
   });
+  mdast.type = "myroot";
   const hast = toHast(mdast, {
     /**
      * markdown 文本里如果包含 h5 源码, 默认是被忽略转换的.
      * 比如 '<p>para</p>' 默认会转换成: {type: 'root', children: []}
      * 在开启 allowDangerousHtml: true 后 h5 源码部分会作为 type: raw 被转换进来. {type: 'root', children: [{type: 'raw', value: '<p>para</p>'}]}
      */
-    allowDangerousHtml: true
+    allowDangerousHtml: true,
+    handlers: {
+      myroot(state, node2) {
+        const result = { type: "root", children: state.all(node2) };
+        state.patch(node2, result);
+        return state.applyData(node2, result);
+      }
+    }
   });
   const hastWithRaw = raw(hast);
   remove(hastWithRaw, (node2, index2, parent) => {
+    return false;
     if (node2.type === "text" && node2.value.replaceAll(" ", "") === "\n") {
       if (index2 === 0) {
         return true;

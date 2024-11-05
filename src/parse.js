@@ -9,9 +9,35 @@ import { gfmFromMarkdown } from 'mdast-util-gfm'
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter'
 
 import { visit } from 'unist-util-visit'
-import { toHast } from 'mdast-util-to-hast'
+
+/**
+ * 关于换行的问题
+ * 一个紧贴着的换行比如 '第一行\n第二行' 会解析成 {type: 'text', value: '第一行\n第二行'}
+ *
+ * 非紧贴换行比如 `第一行\n\n第二行' 会解析成
+ * [
+ *   {type: 'element', children: [{type: 'text', value: '第一行}]},
+ *   {type: 'text', value: '\n'},
+ *   {type: 'element', children: [{type: 'text', value: '第二行}]},
+ * ]
+ */
+
+/**
+ * 因为正常的每一个段落都会有一个 marginBottom, 所以一个空节点, 如果它的上兄弟节点是一个 block 元素, 那么这个空节点不需要显示.
+ * 但是如果它的上兄弟节点是一个 inline 元素, 那么这个空节点是需要被用作换行的.
+ * 比如 '**加粗**\n__加粗__' 在一个段落里的换行, 它的 hast 是这样:
+ * {
+ *   type: 'element', tagName: 'p', children: [
+ *     { type: 'element', tagName: 'strong' },
+ *     { type: 'text', value: '\n' },
+ *     { type: 'element', tagName: 'strong' },
+ *   ]
+ * }
+ *
+ * 这个空节点是要用于换行的.
+ */
+import { toHast } from '@jay.kou/mdast-util-to-hast'
 import { raw } from 'hast-util-raw'
-import { remove } from 'unist-util-remove'
 import { sanitize, defaultSchema } from 'hast-util-sanitize'
 
 // 用于高亮代码
@@ -110,64 +136,26 @@ export function markdownParse(text) {
 
   /**
    * raw 函数的作用是把上面的 hast 树中的 type 为 raw 的部分转化成 html 树.
+   *
+   * 暂定不处理换行问题. 虽然这会导致小程序端和 web 端的表现在有些情况下有差异.
+   * 比如: 1. '<img /><img />' 两个img 紧挨在一起写, 会被解析成:
+   * [
+   *   {type: 'element', tagName: 'img'},
+   *   {type: 'element', tagName: 'img'}
+   * ]
+   *
+   * 而 2. '<img />\n<img />' 两个img 换行写, 会被解析成:
+   * [
+   *   {type: 'element', tagName: 'img'},
+   *   {type: 'text', value: '\n'},
+   *   {type: 'element', tagName: 'img'}
+   * ]
+   * 这会导致小程序端两张图片会换行, 而 web 端则不会换行, 因为 web 端 white-space 默认是 normal, 会把换行符合并成空格.
+   *
+   * 本库暂时不对这个差异做处理, 因为很难做到两边统一.
+   *
    */
   const hastWithRaw = raw(hast)
-
-  /**
-   * 关于换行的问题
-   * 一个紧贴着的换行比如 '第一行\n第二行' 会解析成 {type: 'text', value: '第一行\n第二行'}
-   *
-   * 非紧贴换行比如 `第一行\n\n第二行' 会解析成
-   * [
-   *   {type: 'element', children: [{type: 'text', value: '第一行}]},
-   *   {type: 'text', value: '\n'},
-   *   {type: 'element', children: [{type: 'text', value: '第二行}]},
-   * ]
-   */
-
-  /**
-   * 因为正常的每一个段落都会有一个 marginBottom, 所以一个空节点, 如果它的上兄弟节点是一个 block 元素, 那么这个空节点不需要显示.
-   * 但是如果它的上兄弟节点是一个 inline 元素, 那么这个空节点是需要被用作换行的.
-   * 比如 '**加粗**\n__加粗__' 在一个段落里的换行, 它的 hast 是这样:
-   * {
-   *   type: 'element', tagName: 'p', children: [
-   *     { type: 'element', tagName: 'strong' },
-   *     { type: 'text', value: '\n' },
-   *     { type: 'element', tagName: 'strong' },
-   *   ]
-   * }
-   *
-   * 这个空节点是要用于换行的.
-   */
-
-  /** 移除上兄弟节点是 block 元素的空白节点 */
-  remove(hastWithRaw, (node, index, parent) => {
-    /** 有些情况下 value 值还包含空格 */
-    if (node.type === 'text' && node.value.replaceAll(' ', '') === '\n') {
-      /** children 在第一位的空节点去掉 */
-      if (index === 0) {
-        return true
-      }
-
-      if (index > 0) {
-        const sib = parent.children[index - 1]
-
-        if (isBlockNode(sib.tagName)) {
-          return true
-        }
-
-        // 如果上兄弟节点是 img, 并且下兄弟节点是 figcaption, 那么这个节点也要移除
-        const sibAfter = parent.children[index + 1]
-
-        if (sibAfter && sibAfter.tagName === 'figcaption') {
-          return true
-        }
-      }
-      return false
-    }
-
-    return false
-  })
 
   /**
    * 遍历 element 元素:

@@ -8,7 +8,10 @@ import {
   ImageCaseTwoInRowH5,
   ImageCaseTwoInRowH52,
   LinkCase,
+  ListCase,
+  WrapLineCase,
 } from './case'
+import { redChild } from './wukong-red-child'
 import { huangmei } from './wukongCase'
 
 Component({
@@ -51,9 +54,24 @@ Component({
             value: ImageCase,
           },
           {
+            id: 8,
+            title: '列表 List',
+            value: ListCase,
+          },
+          {
             id: 7,
-            title: '长按段落呼出用于复制段落信息',
+            title: '长按段落呼出菜单',
             value: BlockLongPressCase,
+          },
+        ],
+      },
+      {
+        title: '高级示例',
+        data: [
+          {
+            id: 101,
+            title: '显示评论图标',
+            value: redChild,
           },
         ],
       },
@@ -73,13 +91,7 @@ Component({
           {
             id: 101,
             title: '换行',
-            value:
-              '纯段落\n纯段落2\n\n段落含样式:\n**加粗**和*斜体*\n\n纯段落含样式:\n之前**加粗**和*斜体*\n\n段落含样式:\n**加粗**\n和\n*斜体*\n\n段落3',
-          },
-          {
-            id: 102,
-            title: 'raw',
-            value: '1 <p>hello</p> 2 \n <p>two</p>',
+            value: WrapLineCase,
           },
           {
             id: 103,

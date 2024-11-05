@@ -483,10 +483,10 @@
   margin-right: 28px;
 }
 
-.markdown-body .ul .li:last-child .p,
+/* .markdown-body .ul .li:last-child .p,
 .markdown-body .ol .li:last-child .p {
   margin-bottom: 0;
-}
+} */
 
 .markdown-body .li {
   position: relative;
@@ -513,6 +513,14 @@
   left: 2px;
   background-color: rgba(60, 60, 60, 0.33);
   top: 0.75rem;
+}
+
+.markdown-body .li.task-list-item::before {
+  content: none;
+}
+
+.markdown-body .li.task-list-item {
+  padding-left: 0;
 }
 
 .markdown-body dd {
@@ -1323,4 +1331,23 @@
 .inline {
   display: inline;
   white-space: break-spaces;
+}
+
+checkbox {
+  vertical-align: 1px;
+}
+
+checkbox .wx-checkbox-input {
+  width: 30rpx;
+  height: 30rpx;
+  background-color: transparent;
+}
+
+wx-checkbox .wx-checkbox-input.wx-checkbox-input-checked:before {
+  font-size: 18px;
+  color: #fff;
+}
+
+checkbox .wx-checkbox-input.wx-checkbox-input-checked {
+  background-color: #d1d1d1;
 }
