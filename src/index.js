@@ -1,11 +1,21 @@
-import { markdownParse } from './parse'
+// import { markdownParse } from './parse'
 import { getHastNodeTextValue } from './utils'
+
+const { markdownParse } = require('./parse.js')
 
 Component({
   properties: {
     value: {
       type: String,
       value: '',
+    },
+    patchTree: {
+      type: null,
+      value: undefined,
+    },
+    patchSchema: {
+      type: null,
+      value: undefined,
     },
   },
   data: {
@@ -29,7 +39,9 @@ Component({
   },
   lifetimes: {
     created: function () {
-      console.log('created: ')
+      console.log('created: ', global.document)
+      console.log('先加载一个方法')
+      console.log('想写入一个方法', this)
       // console.log('on created in src', toTree())
       // console.log('on created mdtohast', mdToHast)
     },
@@ -38,8 +50,10 @@ Component({
     // 解析 markdwon 文字
     parseMdText(value) {
       // const treeOri = mdToHast(value, defaultSchema)
-      const treeOri = markdownParse(value)
-      console.log('解析完毕 text', treeOri)
+      const treeOri = markdownParse(value, {
+        patchTree: this.data.patchTree,
+        patchSchema: this.data.patchSchema,
+      })
       this.setData({ tree: treeOri })
     },
     closeLinkDialog() {

@@ -43,6 +43,8 @@ import { sanitize, defaultSchema } from 'hast-util-sanitize'
 // 用于高亮代码
 import Prism from 'prismjs'
 
+import VFile from './vfile-bundle'
+
 import {
   getHastNodeTextValue,
   isBlockNode,
@@ -102,7 +104,8 @@ function handleCode(node) {
  * 小程序页面拿到 hast 后就能遍历节点进行渲染
  */
 
-export function markdownParse(text) {
+export function markdownParse(text, options = {}) {
+  const start = new Date().getTime()
   /**
    * fromMarkdown 函数的作用是将 markdown 文字转换成 mdast(markdown 抽象语法树)
    * 它支持传入扩展, 用来识别一些特定的语法, 比如 GFM, math 等.
@@ -155,13 +158,17 @@ export function markdownParse(text) {
    * 本库暂时不对这个差异做处理, 因为很难做到两边统一.
    *
    */
-  const hastWithRaw = raw(hast)
+  const hastWithRaw = raw(hast, { file: new VFile(text) })
+  // const hastWithRaw = raw(hast)
 
   /**
    * 遍历 element 元素:
    * 处理 tagName: pre > code, 将内容高亮
+   *
    * 处理 a 标签, 把 a 标签中的纯文本赋到属性上.
+   *
    * 收集所有的图片地址, 用于图片集预览
+   *
    * 给 block 节点赋上 isBlockNode: blockNode指的是样式上的块节点,
    * 比如 p, div, ul, ol, li, h1. 与之对应的是 inlineNode
    *
@@ -173,6 +180,10 @@ export function markdownParse(text) {
    */
   const srcs = []
   visit(hastWithRaw, (node) => {
+    if (options.patchTree) {
+      options.patchTree(node)
+    }
+
     if (node.type === 'element') {
       if (node.tagName === 'pre') {
         /**
@@ -216,11 +227,21 @@ export function markdownParse(text) {
   defaultSchema.attributes['*'].push('isHeaderNode')
   defaultSchema.attributes['*'].push('isCodeNode')
 
+  if (options.patchSchema) {
+    options.patchSchema(defaultSchema)
+  }
+
   const afterSanitize = sanitize(hastWithRaw, defaultSchema)
 
   // srcs 要去重
   const srcsSet = new Set(srcs)
   afterSanitize.srcs = Array.from(srcsSet)
+
+  const end = new Date().getTime()
+
+  console.log('解析耗时', end - start)
+
+  console.log('解析完毕', afterSanitize)
   return afterSanitize
 }
 

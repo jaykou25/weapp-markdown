@@ -15,7 +15,8 @@
     "coverage": "jest ./test/* --coverage --bail",
     "lint": "eslint \"src/**/*.js\" --fix",
     "lint-tools": "eslint \"tools/**/*.js\" --rule \"import/no-extraneous-dependencies: false\" --fix",
-    "test-bundle": "esbuild ./src/parse.js --bundle --outdir=./testBundle --format=cjs --define:process.env.NODE_ENV=\\\"test\\\""
+    "test-bundle": "node esbuild.config.js",
+    "vfile-build": "node esbuild.vfile.js"
   },
   "miniprogram": "miniprogram_dist",
   "jest": {
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7",
     "@babel/preset-env": "^7",
+    "@jay.kou/mdast-util-to-hast": "^0.1.0",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
     "babel-jest": "^29.7.0",
@@ -61,11 +63,11 @@
     "hast-util-raw": "^9.0.1",
     "hast-util-sanitize": "^5.0.1",
     "jest": "^24.0.0",
+    "jsdom": "^25.0.1",
     "mdast-util-from-markdown": "^2.0.0",
     "mdast-util-frontmatter": "^2.0.1",
     "mdast-util-gfm": "^3.0.0",
     "mdast-util-to-hast": "^13.0.2",
-    "@jay.kou/mdast-util-to-hast": "^0.1.0",
     "micromark-extension-frontmatter": "^2.0.0",
     "micromark-extension-gfm": "^3.0.0",
     "miniprogram-api-typings": "^2.10.3-1",
@@ -77,6 +79,7 @@
     "typescript": "^3.8.3",
     "unist-util-remove": "^4.0.0",
     "unist-util-visit": "^5.0.0",
+    "vfile": "^6.0.3",
     "vinyl": "^2.2.0",
     "webpack": "^5",
     "webpack-node-externals": "^1.7.2"

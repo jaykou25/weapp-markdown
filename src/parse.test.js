@@ -10,6 +10,7 @@ import {
 import { visitTree } from './utils'
 
 const { markdownParse } = require('../testBundle/parse')
+console.log('TRY', document)
 
 // 换行问题
 describe('换行问题', () => {

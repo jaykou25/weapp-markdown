@@ -65,6 +65,7 @@ function js(jsFileMap, scope) {
     }
   }
 
+  console.log('jsFileMap', jsFileMap)
   webpackConfig.entry = jsFileMap
   webpackConfig.output.path = distPath
 
@@ -264,6 +265,7 @@ class BuildTask {
      */
     gulp.task(`${id}-component-js`, (done) => {
       const jsFileList = this.componentListMap.jsFileList
+      console.log('jsFileList', jsFileList)
 
       if (
         jsFileList &&

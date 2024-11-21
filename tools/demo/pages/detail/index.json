@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "weapp-markdown": "../../components/index",
-    "my-block-extra": "./my-block-extra",
+    "comment": "./comment",
     "my-long-press-extra": "./my-long-press-extra"
   }
 }

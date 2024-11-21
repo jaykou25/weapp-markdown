@@ -1,4 +1,4 @@
-import { setValue } from '../../constant'
+import { setKey, setLineInfo, setValue } from '../../constant'
 import {
   BlockLongPressCase,
   CodeCase,
@@ -71,6 +71,37 @@ Component({
           {
             id: 101,
             title: '显示评论图标',
+            key: 'showComment',
+            lineInfo: {
+              1: {
+                comments: [
+                  {
+                    name: 'Byron_kk',
+                    avatar:
+                      'https://i2.hdslb.com/bfs/face/2e35a0e10d2f150f54a231a291bad638a080066e.jpg@64w_64h.jpg',
+                    content:
+                      '所以罗刹被灵山派屠灭，老君给灵山使个坏，留个罗刹根让他复仇是吧？',
+                    createAt: '2024-08-29 22:21:59',
+                  },
+                  {
+                    name: 'Super麦可馨',
+                    avatar:
+                      'https://i2.hdslb.com/bfs/face/a009d90faaa00baebe8138131dfceaca754b2fb8.jpg@64w_64h.jpg',
+                    content:
+                      '游戏里红孩儿的形象狡黠阴险，对老牛又是老匹夫又是老东西的，看起来目无尊长无法无天，看红孩儿和萍萍的影神图这孩子其实是刀子嘴豆腐心呀，只不过一心想要复仇',
+                    createAt: '2024-08-28 14:31:23',
+                  },
+                  {
+                    name: '奴为不永族家观乐',
+                    avatar:
+                      'https://i1.hdslb.com/bfs/face/7e72c58637ff26df68fb30939de078d2bbbfcdbe.jpg@64w_64h.jpg',
+                    content:
+                      '黑熊精讨伐大圣已经过去几百年了，后面善财被观音送回火焰山尽孝团聚，才有这第五章',
+                    createAt: '2024-08-29 21:27:21',
+                  },
+                ],
+              },
+            },
             value: redChild,
           },
         ],
@@ -134,6 +165,8 @@ Component({
       )
 
       setValue(target.value)
+      setKey(target.key)
+      setLineInfo(target.lineInfo)
 
       wx.navigateTo({
         url: '/pages/detail/index',

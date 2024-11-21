@@ -55,32 +55,32 @@ module.exports = {
             },
           ],
         },
-        {
-          test: /\.ts$/,
-          use: [
-            {
-              loader: 'babel-loader',
-            },
-            {
-              loader: 'ts-loader',
-              options: {
-                appendTsSuffixTo: [/\.vue$/],
-                happyPackMode: true,
-              },
-            },
-            // {
-            //   loader: 'eslint-loader',
-            // },
-          ],
-        },
+        // {
+        //   test: /\.ts$/,
+        //   use: [
+        //     {
+        //       loader: 'babel-loader',
+        //     },
+        //     {
+        //       loader: 'ts-loader',
+        //       options: {
+        //         appendTsSuffixTo: [/\.vue$/],
+        //         happyPackMode: true,
+        //       },
+        //     },
+        //     // {
+        //     //   loader: 'eslint-loader',
+        //     // },
+        //   ],
+        // },
       ],
     },
-    resolve: {
-      // modules: [src, 'node_modules'],
-      modules: ['node_modules'],
-      extensions: ['.js', '.json'],
-      // mainFields: ['browser', 'module', 'main', 'exports.development'],
-    },
+    // resolve: {
+    //   // modules: [src, 'node_modules'],
+    //   modules: ['node_modules'],
+    //   extensions: ['.js', '.json'],
+    //   // mainFields: ['browser', 'module', 'main', 'exports.development'],
+    // },
     plugins: [
       new webpack.DefinePlugin({}),
       new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
