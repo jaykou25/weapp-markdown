@@ -1296,9 +1296,9 @@
   font-size: 16px;
 }
 
-/* weui-half-screen-dialog 上有 padding 的, 这会导制当有滚动条的时候, 滚动条不在最右边上 */
+/* weui-half-screen-dialog 上有左右的 padding, 这会导制当有滚动条的时候, 滚动条不在最右边上 */
 /* 所以这里让 body 靠右 */
-.long-press-body {
+._long-press-body {
   margin-right: calc(-24px - env(safe-area-inset-right));
   padding-right: calc(24px + env(safe-area-inset-right));
 }

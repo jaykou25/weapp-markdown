@@ -49,7 +49,7 @@
   <!-- 长按段落呼出的弹窗 -->
   <view wx:if="{{blockCSSShow || blockShow}}" aria-role="dialog" aria-modal="true" aria-labelledby="js_dialog1_title">
     <view class="weui-mask {{blockCSSShow ? 'weui-animate_fade-in' : 'weui-animate_fade-out'}}" bindtap="closeBlockDialog"></view>
-    <view class="weui-half-screen-dialog {{blockCSSShow ? 'weui-animate_slide-up' : 'weui-animate_slide-down'}}" bindtouchstart="longPressContentTouchStart" bindtouchend="longPressContentTouchEnd">
+    <view class="weui-half-screen-dialog {{blockCSSShow ? 'weui-animate_slide-up' : 'weui-animate_slide-down'}}">
       <view class="weui-half-screen-dialog__hd">
         <view class="weui-half-screen-dialog__hd__side" />
         <view class="weui-half-screen-dialog__hd__main">
@@ -62,12 +62,9 @@
             关闭
             <i class="weui-icon-close-thin" />
           </view>
-          <view style="display: none;" aria-role="button" class="weui-icon-btn weui-icon-btn_close" bindtap="close">
-            关闭
-          </view>
         </view>
       </view>
-      <view class="weui-half-screen-dialog__bd long-press-body">
+      <view class="weui-half-screen-dialog__bd _long-press-body">
         <view class="flex items-start">
           <text user-select class="long-press-block cell-middle text-left">{{blockText}}</text>
           <view class="cell-right">

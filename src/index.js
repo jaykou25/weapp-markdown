@@ -109,13 +109,5 @@ Component({
         urls: this.data.tree.srcs,
       })
     },
-    longPressContentTouchStart() {
-      console.log('longPressBodyStart')
-      // this.data.canScroll = false
-    },
-    longPressContentTouchEnd() {
-      console.log('longPressBodyEnd')
-      // this.data.canScroll = true
-    },
   },
 })

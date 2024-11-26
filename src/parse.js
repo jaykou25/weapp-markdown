@@ -181,7 +181,7 @@ export function markdownParse(text, options = {}) {
   const srcs = []
   visit(hastWithRaw, (node) => {
     if (options.patchTree) {
-      options.patchTree(node)
+      options.patchTree(node, { setProperties })
     }
 
     if (node.type === 'element') {

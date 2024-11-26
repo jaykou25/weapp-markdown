@@ -1,5 +1,5 @@
-<block wx:if='{{node.properties.isLeafBlockNode}}'>
+<block wx:if='{{node.properties.hasComment}}'>
   <view class="slot-container">
-    <image src='./assets/comment.png' style="width: 15px; margin-bottom: -1px" mode='widthFix' />
+    <image bindtap='commentTap' data-line-start='{{node.position.start.line}}' src='./assets/comment.png' style="width: 15px; margin-bottom: -1px" mode='widthFix' />
   </view>
 </block>

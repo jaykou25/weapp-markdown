@@ -1,4 +1,36 @@
-<view class="container">
-  <weapp-markdown wx:if="{{key === 'showComment'}}" value="{{value}}" patchTree="{{patchTreeForComment}}" generic:block-extra="comment" generic:long-press-extra="my-long-press-extra" />
+<view class="container" bindcommentIconTap='icontap'>
+  <weapp-markdown wx:if="{{key === 'showComment'}}" value="{{value}}" patchTree="{{patchTreeForComment}}" patchSchema="{{patchSchemaForComment}}" generic:block-extra="comment" generic:long-press-extra="my-long-press-extra" />
   <weapp-markdown wx:else value="{{value}}" generic:long-press-extra="my-long-press-extra" />
+  <!-- 显示评论的弹窗 -->
+  <view wx:if="{{commentCSSShow || commentShow}}" aria-role="dialog" aria-modal="true" aria-labelledby="js_dialog1_title">
+    <view class="weui-mask {{commentCSSShow ? 'weui-animate_fade-in' : 'weui-animate_fade-out'}}" bindtap="closeCommentDialog"></view>
+    <view class="weui-half-screen-dialog {{commentCSSShow ? 'weui-animate_slide-up' : 'weui-animate_slide-down'}}">
+      <view class="weui-half-screen-dialog__hd">
+        <view class="weui-half-screen-dialog__hd__side" />
+        <view class="weui-half-screen-dialog__hd__main">
+          <strong class="weui-half-screen-dialog__title" id="js_dialog1_title">
+            评论
+          </strong>
+        </view>
+        <view class="weui-half-screen-dialog__hd__side">
+          <view aria-role="button" class="weui-btn_icon weui-wa-hotarea" bindtap="closeCommentDialog">
+            关闭
+            <i class="weui-icon-close-thin" />
+          </view>
+        </view>
+      </view>
+      <view class="weui-half-screen-dialog__bd comment-dialog-body">
+        <view wx:for="{{commentData}}" wx:key="time" class="flex items-start comment-row">
+          <image class="avatar" src="{{item.avatar}}" />
+          <view class='right-part'>
+            <view class='comment-title'>{{item.name}}</view>
+            <view class='comment-content'>
+              <text>{{item.content}}</text>
+            </view>
+            <view class='comment-time'>{{item.createAt}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

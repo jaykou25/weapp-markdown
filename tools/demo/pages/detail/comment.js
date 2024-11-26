@@ -5,11 +5,14 @@ Component({
       value: {},
     },
   },
-  observers: {
-    node: function (node) {
-      console.log('my-block-extra', node)
+  data: {},
+  methods: {
+    commentTap(e) {
+      const { dataset } = e.currentTarget
+      this.triggerEvent('commentIconTap', dataset, {
+        bubbles: true,
+        composed: true,
+      })
     },
   },
-
-  data: {},
 })

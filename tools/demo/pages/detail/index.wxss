@@ -1,3 +1,37 @@
 .container {
   height: 100%;
 }
+
+.comment-dialog-body {
+  margin-right: -24px;
+  padding-right: 24px;
+  margin-left: -10px;
+}
+
+.comment-row {
+  padding: 16px 0;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+  flex: none;
+}
+
+.comment-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.comment-content {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.comment-time {
+  margin-top: 12px;
+  font-size: 14px;
+}
