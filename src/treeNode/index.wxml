@@ -16,8 +16,11 @@
     <tree-node wx:for='{{node.children}}' wx:key='index' outer-row='{{false}}' parent-node='{{node}}' node='{{item}}' />
   </block>
 </view>
+<!-- 处理table -->
+<table wx:elif="{{node.tagName === 'table'}}" data="{{node}}" />
 <!-- 处理checkbox -->
 <checkbox wx:elif="{{node.tagName === 'input'}}" checked="{{node.properties.checked}}" />
+<!-- 处理图片 -->
 <image wx:elif="{{node.tagName === 'img'}}" style="{{node.properties.width ? 'width:' + node.properties.width + 'px' : ''}}" src='{{node.properties.src}}' show-menu-by-longpress mode='widthFix' data-imgsrc='{{node.properties.src}}' bindtap='listenImgPreview' />
 <block wx:elif="{{node.type === 'element'}}">
   <view class="{{node.tagName}} {{node.properties.isBlockNode ? 'blockNodeStyle' : ''}} {{util.getClass(node.properties)}}" style="{{node.properties.style}} {{node.properties.start ? 'counter-reset: item ' + (node.properties.start - 1) : ''}}">

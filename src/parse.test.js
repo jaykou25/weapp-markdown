@@ -1,5 +1,4 @@
 import {
-  BlockLongPressCase,
   CodeCase,
   ImageCase,
   ImageCaseFigure2,
@@ -10,7 +9,6 @@ import {
 import { visitTree } from './utils'
 
 const { markdownParse } = require('../testBundle/parse')
-console.log('TRY', document)
 
 // 换行问题
 describe('换行问题', () => {
@@ -36,11 +34,13 @@ describe('换行问题', () => {
     expect(pChildren[1].value).toBe('\n')
   })
 
-  test('解析figure 标签时, 图片和图题之间的空白节点要去掉', () => {
+  test('解析figure 标签时, 图片和图题之间的空白节点不做处理', () => {
     const ret = markdownParse(ImageCaseFigure2)
     const figure = ret.children[0]
-    expect(figure.children[0].tagName).toBe('img')
-    expect(figure.children[1].tagName).toBe('figcaption')
+    expect(figure.children[0].type).toBe('text')
+    expect(figure.children[1].tagName).toBe('img')
+    expect(figure.children[2].type).toBe('text')
+    expect(figure.children[3].tagName).toBe('figcaption')
   })
 })
 
@@ -118,5 +118,15 @@ describe('在解析节点时, 给节点赋上相应的值, 这些值在页面渲
   test('给 block 节点赋上 isLeafBlockNode', () => {
     const ret = markdownParse('# header')
     expect(ret.children[0].properties.isLeafBlockNode).toBe(true)
+  })
+})
+
+describe('解析 table', () => {
+  test('解析 table 语法时, 结果中不应该有连续的换行', () => {
+    const ret = markdownParse('| h | h |\n| --- | --- |\n| one | two |')
+    const table = ret.children[0]
+    expect(table.tagName).toBe('table')
+    expect(table.children[0].tagName).toBe('thead')
+    expect(table.children[1].tagName).toBe('tbody')
   })
 })

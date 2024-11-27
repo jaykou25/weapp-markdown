@@ -239,9 +239,13 @@ export function markdownParse(text, options = {}) {
 
   const end = new Date().getTime()
 
-  console.log('解析耗时', end - start)
+  // DEVELOPMENT 是 webpack 全局定义的
+  // eslint-disable-next-line no-undef
+  if (DEVELOPMENT) {
+    console.log('解析耗时', end - start)
 
-  console.log('解析完毕', afterSanitize)
+    console.log('解析完毕', afterSanitize)
+  }
   return afterSanitize
 }
 

@@ -7,7 +7,7 @@ Component({
     patchTreeForComment: (node, options) => {
       const { setProperties } = options
       if (node.type === 'element') {
-        const startLine = node.position.start.line
+        const startLine = node.position?.start.line
         if (startLine in DATA.lineInfo) {
           setProperties(node, { hasComment: true })
         }

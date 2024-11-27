@@ -421,33 +421,6 @@
   display: inline;
 }
 
-/* 图例相关样式--begin */
-.markdown-body .figure {
-  margin-top: 0;
-  margin-bottom: 10px;
-  letter-spacing: 0.6px;
-}
-
-.markdown-body .figure {
-  font-size: 13px;
-  text-align: right;
-  color: rgb(116, 25, 13);
-  line-height: normal;
-}
-
-.markdown-body .align-center {
-  text-align: center;
-}
-
-.markdown-body .align-left {
-  text-align: left;
-}
-
-.markdown-body .align-right {
-  text-align: right;
-}
-/* 图例相关样式--end */
-
 .markdown-body .blockquote {
   margin: 0;
   padding: 0 1em;
@@ -761,7 +734,7 @@
 }
 
 .markdown-body .table {
-  width: 99.99%;
+  width: max-width;
   border-collapse: collapse;
   border-spacing: 0;
   display: table;
@@ -777,8 +750,9 @@
   display: table-row-group;
 }
 
-.markdown-body .table .th {
+.markdown-body .th {
   font-weight: var(--base-text-weight-semibold, 600);
+  text-align: center;
 }
 
 .markdown-body .table .th,
@@ -1351,3 +1325,30 @@ wx-checkbox .wx-checkbox-input.wx-checkbox-input-checked:before {
 checkbox .wx-checkbox-input.wx-checkbox-input-checked {
   background-color: #d1d1d1;
 }
+
+/* 图例相关样式--begin */
+.markdown-body .figure {
+  margin-top: 0;
+  margin-bottom: 10px;
+  letter-spacing: 0.6px;
+}
+
+.markdown-body .figure {
+  font-size: 13px;
+  text-align: right;
+  color: rgb(116, 25, 13);
+  line-height: normal;
+}
+
+.markdown-body .align-center {
+  text-align: center;
+}
+
+.markdown-body .align-left {
+  text-align: left;
+}
+
+.markdown-body .align-right {
+  text-align: right;
+}
+/* 图例相关样式--end */

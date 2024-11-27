@@ -9,6 +9,7 @@ const demoDist = path.resolve(__dirname, '../miniprogram_dev')
 const src = path.resolve(__dirname, '../src')
 const dev = path.join(demoDist, 'components')
 const dist = path.resolve(__dirname, '../miniprogram_dist')
+const demoEnv = process.env.NODE_ENV
 
 module.exports = {
   entry: ['index'],
@@ -82,7 +83,9 @@ module.exports = {
     //   // mainFields: ['browser', 'module', 'main', 'exports.development'],
     // },
     plugins: [
-      new webpack.DefinePlugin({}),
+      new webpack.DefinePlugin({
+        DEVELOPMENT: demoEnv === 'development',
+      }),
       new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     ],
     optimization: {

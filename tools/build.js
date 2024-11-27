@@ -266,6 +266,7 @@ class BuildTask {
     gulp.task(`${id}-component-js`, (done) => {
       const jsFileList = this.componentListMap.jsFileList
       console.log('jsFileList', jsFileList)
+      console.log('component-js环境变量', process.env.NODE_ENV)
 
       if (
         jsFileList &&
